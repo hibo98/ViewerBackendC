@@ -20,6 +20,9 @@ JsonRequest::JsonRequest(QUrl* url, QObject* parent) : QObject(parent) {
     connect(this->thread, &QThread::finished, this, &JsonRequest::deleteLater);
     connect(this, &JsonRequest::destroyed, this->thread, &QThread::deleteLater);
     connect(this->thread, &QThread::started, this, &JsonRequest::process);
+}
+
+void JsonRequest::start() {
     this->thread->start();
 }
 

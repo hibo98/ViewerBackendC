@@ -19,5 +19,3 @@ void Main2::stop() {
     //emit quit();
 }
 
-
-

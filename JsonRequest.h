@@ -23,7 +23,7 @@ class JsonRequest : public QObject {
 
 public:
     explicit JsonRequest(QUrl* url, QObject* parent = nullptr);
-
+    void start();
 private:
     QThread* thread;
     QUrl* url;

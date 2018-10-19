@@ -55,7 +55,32 @@ bool Node::hasValidLocation() {
 }
 
 void Node::fill(DataParser* dp) {
+    QJsonObject json = dp->getData();
     
+    if (json.contains("clients")) {
+        this->clients = (signed char) json.value("clients").toInt();
+    }
+    if (json.contains("firstseen")) {
+        this->firstseen = json.value("firstseen").toString().toLong();
+    }
+    if (json.contains("lastseen")) {
+        this->firstseen = json.value("firstseen").toString().toLong();
+    }
+    if (json.contains("lat") && json.contains("lon")) {
+        this->location = new Location(json.value("lat").toDouble(), json.value("lon").toDouble());
+    }
+    if (json.contains("name")) {
+        this->name = json.value("name").toString();
+    }
+    if (json.contains("online")) {
+        this->online = json.value("online").toBool();
+    }
+    if (json.contains("gateway")) {
+        this->gateway = json.value("gateway").toBool();
+    }
+    if (dp->hasLinkSet()) {
+        this->links = *dp->getLinkSet();
+    }
 }
 
 int Node::convertIpToId(QString ip) {

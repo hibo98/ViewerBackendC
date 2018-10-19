@@ -25,11 +25,13 @@ public:
     QSet<Link*>* getLinkSet() override;
 private:
     QJsonObject json;
+    QJsonObject r;
     int getClients();
     long getFirstseen();
     long getLastseen();
-    float getLongitude();
-    float getLatitude();
+    double getLongitude();
+    double getLatitude();
+    QString getName();
     bool isOnline();
     bool isGateway();
 };

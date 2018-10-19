@@ -141,6 +141,7 @@ DIST          = /usr/lib/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/qt5/mkspecs/cygwin-g++/qmake.conf \
 		/usr/lib/qt5/mkspecs/features/spec_post.prf \
+		nbproject/.qmake.stash \
 		/usr/lib/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/qt5/mkspecs/features/default_pre.prf \
@@ -253,6 +254,7 @@ qttmp-Debug.mk: nbproject/qt-Debug.pro /usr/lib/qt5/mkspecs/cygwin-g++/qmake.con
 		/usr/lib/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/qt5/mkspecs/cygwin-g++/qmake.conf \
 		/usr/lib/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/qt5/mkspecs/features/default_pre.prf \
@@ -339,6 +341,7 @@ qttmp-Debug.mk: nbproject/qt-Debug.pro /usr/lib/qt5/mkspecs/cygwin-g++/qmake.con
 /usr/lib/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/qt5/mkspecs/cygwin-g++/qmake.conf:
 /usr/lib/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/qt5/mkspecs/features/default_pre.prf:

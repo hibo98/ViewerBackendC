@@ -104,7 +104,7 @@
       </toolsSet>
       <qt>
         <buildMode>1</buildMode>
-        <modules>core</modules>
+        <modules>core network</modules>
       </qt>
       <compileType>
         <cTool>

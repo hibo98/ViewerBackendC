@@ -58,20 +58,22 @@ QMap<int, QMap<int, Link*>*> DataHolder::getLinks() {
 void DataHolder::requestAPI() {
     JsonRequest* request = new JsonRequest(new QUrl("http://api.freifunk-dresden.de/freifunk-niklas-hopglass.json"));
     QObject::connect(request, &JsonRequest::result, this, &DataHolder::processAPI);
+    request->start();
 }
 
 void DataHolder::processAPI(QJsonDocument doc) {
     if (!doc.isArray()) {
-        std::cerr << "" << std::endl;
+        std::cerr << "No Array!" << std::endl;
     }
     QJsonArray array = doc.array();
     for (int i = 0; i < array.size(); i++) {
         QJsonValueRef value = array[i];
         if (value.isObject()) {
             QJsonObject o = value.toObject();
-            int id = o.value("id").toInt(-1);
+            int id = o.value("id").toString("-1").toInt();
             if (id != -1) {
                 this->getNode(id)->fill(new DataParserAPI(o));
+                //std::cout << id << ": " << this->getNode(id)->getHostname().toStdString() << std::endl;
             }
         }
     }
