@@ -4,6 +4,10 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>DataHolder.h</itemPath>
+      <itemPath>dataparser/DataParser.h</itemPath>
+      <itemPath>dataparser/DataParserAPI.h</itemPath>
+      <itemPath>JsonRequest.h</itemPath>
       <itemPath>Link.h</itemPath>
       <itemPath>Location.h</itemPath>
       <itemPath>Main2.h</itemPath>
@@ -16,6 +20,10 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>DataHolder.cpp</itemPath>
+      <itemPath>dataparser/DataParser.cpp</itemPath>
+      <itemPath>dataparser/DataParserAPI.cpp</itemPath>
+      <itemPath>JsonRequest.cpp</itemPath>
       <itemPath>Link.cpp</itemPath>
       <itemPath>Location.cpp</itemPath>
       <itemPath>Main2.cpp</itemPath>
@@ -44,7 +52,7 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <qt>
-        <modules>core</modules>
+        <modules>core network</modules>
       </qt>
       <compileType>
         <ccTool>
@@ -52,6 +60,14 @@
         </ccTool>
       </compileType>
       <item path=".gitignore" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DataHolder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DataHolder.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="JsonRequest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="JsonRequest.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Link.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -68,6 +84,14 @@
       <item path="Node.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Node.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="dataparser/DataParser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="dataparser/DataParser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="dataparser/DataParserAPI.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="dataparser/DataParserAPI.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -99,6 +123,14 @@
       </compileType>
       <item path=".gitignore" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="DataHolder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DataHolder.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="JsonRequest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="JsonRequest.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Link.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Link.h" ex="false" tool="3" flavor2="0">
@@ -114,6 +146,14 @@
       <item path="Node.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Node.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="dataparser/DataParser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="dataparser/DataParser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="dataparser/DataParserAPI.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="dataparser/DataParserAPI.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

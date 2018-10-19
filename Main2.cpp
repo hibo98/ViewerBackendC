@@ -8,11 +8,15 @@
 
 #include "Main2.h"
 
+#include "DataHolder.h"
+
 Main2::Main2(QObject*parent) : QObject(parent) {
 }
 
 void Main2::stop() {
-    emit quit();
+    DataHolder* dh = new DataHolder();
+    dh->requestAPI();
+    //emit quit();
 }
 
 

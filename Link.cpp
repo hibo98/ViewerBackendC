@@ -22,6 +22,26 @@ Link::Link(const Link& orig) : Link(orig.type, orig.sourceTq, orig.targetTq, ori
 Link::~Link() {
 }
 
+Node* Link::getSource() {
+    return this->source;
+}
+
+Node* Link::getTarget() {
+    return this->target;
+}
+
+signed char Link::getSourceTq() {
+    return this->sourceTq;
+}
+
+signed char Link::getTargetTq() {
+    return this->targetTq;
+}
+
+LinkType Link::getLinkType() {
+    return this->type;
+}
+
 QString Link::getTypeHopglass() {
     switch (this->type) {
         case TUNNEL:

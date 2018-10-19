@@ -19,7 +19,7 @@ Node::~Node() {
 }
 
 QString Node::getHostname() {
-    if (this->name->isNull() || this->name->isEmpty()) {
+    if (this->name.isNull() || this->name.isEmpty()) {
         return QString::number(this->id);
     } else {
         return QString::number(this->id).append('-').append(this->name);
@@ -54,10 +54,14 @@ bool Node::hasValidLocation() {
     return this->location->isValid();
 }
 
+void Node::fill(DataParser* dp) {
+    
+}
+
 int Node::convertIpToId(QString ip) {
     QStringList split = ip.split('.');
     if (split.size() == 4) {
-        return split.at(2).toInt() * 255 + split.at(3) - 1;
+        return split.at(2).toInt() * 255 + split.at(3).toInt() - 1;
     }
     return -1;
 }

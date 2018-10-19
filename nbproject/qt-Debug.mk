@@ -12,10 +12,10 @@ MAKEFILE      = qttmp-Debug.mk
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_CORE_LIB
+DEFINES       = -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -fno-keep-inline-dllexport -D_GNU_SOURCE -pipe -g -Wall -W -D_REENTRANT $(DEFINES)
 CXXFLAGS      = -fno-keep-inline-dllexport -D_GNU_SOURCE -pipe -g -Wall -W -D_REENTRANT $(DEFINES)
-INCPATH       = -Inbproject -I. -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -I. -I/usr/lib/qt5/mkspecs/cygwin-g++
+INCPATH       = -Inbproject -I. -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtNetwork -isystem /usr/include/qt5/QtCore -I. -I/usr/lib/qt5/mkspecs/cygwin-g++
 QMAKE         = /cygdrive/C/cygwin64/bin/qmake-qt5
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -38,7 +38,7 @@ DISTNAME      = ViewerBackendC1.0.0
 DISTDIR = /cygdrive/d/NetBeansProjekte/ViewerBackendC/build/Debug/LocalCygwin-Windows/ViewerBackendC1.0.0
 LINK          = g++
 LFLAGS        = 
-LIBS          = $(SUBLIBS) -lQt5Core -lpthread 
+LIBS          = $(SUBLIBS) -lQt5Network -lQt5Core -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -50,16 +50,28 @@ OBJECTS_DIR   = build/Debug/LocalCygwin-Windows/
 
 ####### Files
 
-SOURCES       = Link.cpp \
+SOURCES       = DataHolder.cpp \
+		JsonRequest.cpp \
+		Link.cpp \
 		Location.cpp \
 		Main2.cpp \
 		Node.cpp \
-		main.cpp moc_Main2.cpp
-OBJECTS       = build/Debug/LocalCygwin-Windows/Link.o \
+		dataparser/DataParser.cpp \
+		dataparser/DataParserAPI.cpp \
+		main.cpp moc_DataHolder.cpp \
+		moc_JsonRequest.cpp \
+		moc_Main2.cpp
+OBJECTS       = build/Debug/LocalCygwin-Windows/DataHolder.o \
+		build/Debug/LocalCygwin-Windows/JsonRequest.o \
+		build/Debug/LocalCygwin-Windows/Link.o \
 		build/Debug/LocalCygwin-Windows/Location.o \
 		build/Debug/LocalCygwin-Windows/Main2.o \
 		build/Debug/LocalCygwin-Windows/Node.o \
+		build/Debug/LocalCygwin-Windows/DataParser.o \
+		build/Debug/LocalCygwin-Windows/DataParserAPI.o \
 		build/Debug/LocalCygwin-Windows/main.o \
+		build/Debug/LocalCygwin-Windows/moc_DataHolder.o \
+		build/Debug/LocalCygwin-Windows/moc_JsonRequest.o \
 		build/Debug/LocalCygwin-Windows/moc_Main2.o
 DIST          = /usr/lib/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt5/mkspecs/common/unix.conf \
@@ -87,19 +99,39 @@ DIST          = /usr/lib/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_linuxaccessibility_support_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_network.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_network_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_networkauth.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_networkauth_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_opengl.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_opengl_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_openglextensions.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_openglextensions_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_packetprotocol_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_platformcompositor_support_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_printsupport.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_printsupport_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_qml.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_qml_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_qmldebug_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_qmldevtools_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_qmltest.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_qmltest_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_quick.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_quick_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_quickparticles_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_quickwidgets.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_quickwidgets_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_remoteobjects.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_remoteobjects_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_repparser.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_repparser_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_service_support_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_sql.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_sql_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_testlib.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_testlib_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_theme_support_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_webchannel.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_webchannel_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_widgets.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_widgets_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_xcb_qpa_lib_private.pri \
@@ -125,13 +157,21 @@ DIST          = /usr/lib/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/qt5/mkspecs/features/lex.prf \
-		nbproject/nbproject/qt-Debug.pro Link.h \
+		nbproject/nbproject/qt-Debug.pro DataHolder.h \
+		JsonRequest.h \
+		Link.h \
 		Location.h \
 		Main2.h \
-		Node.h Link.cpp \
+		Node.h \
+		dataparser/DataParser.h \
+		dataparser/DataParserAPI.h DataHolder.cpp \
+		JsonRequest.cpp \
+		Link.cpp \
 		Location.cpp \
 		Main2.cpp \
 		Node.cpp \
+		dataparser/DataParser.cpp \
+		dataparser/DataParserAPI.cpp \
 		main.cpp
 QMAKE_TARGET  = ViewerBackendC
 DESTDIR       = dist/Debug/LocalCygwin-Windows/
@@ -171,19 +211,39 @@ qttmp-Debug.mk: nbproject/qt-Debug.pro /usr/lib/qt5/mkspecs/cygwin-g++/qmake.con
 		/usr/lib/qt5/mkspecs/modules/qt_lib_linuxaccessibility_support_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_network.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_network_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_networkauth.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_networkauth_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_opengl.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_opengl_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_openglextensions.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_openglextensions_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_packetprotocol_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_platformcompositor_support_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_printsupport.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_printsupport_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_qml.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_qml_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_qmldebug_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_qmldevtools_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_qmltest.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_qmltest_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_quick.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_quick_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_quickparticles_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_quickwidgets.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_quickwidgets_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_remoteobjects.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_remoteobjects_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_repparser.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_repparser_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_service_support_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_sql.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_sql_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_testlib.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_testlib_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_theme_support_private.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_webchannel.pri \
+		/usr/lib/qt5/mkspecs/modules/qt_lib_webchannel_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_widgets.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_widgets_private.pri \
 		/usr/lib/qt5/mkspecs/modules/qt_lib_xcb_qpa_lib_private.pri \
@@ -237,19 +297,39 @@ qttmp-Debug.mk: nbproject/qt-Debug.pro /usr/lib/qt5/mkspecs/cygwin-g++/qmake.con
 /usr/lib/qt5/mkspecs/modules/qt_lib_linuxaccessibility_support_private.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_network.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_network_private.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_networkauth.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_networkauth_private.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_opengl.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_opengl_private.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_openglextensions.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_openglextensions_private.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_packetprotocol_private.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_platformcompositor_support_private.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_printsupport.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_printsupport_private.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_qml.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_qml_private.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_qmldebug_private.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_qmldevtools_private.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_qmltest.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_qmltest_private.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_quick.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_quick_private.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_quickparticles_private.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_quickwidgets.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_quickwidgets_private.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_remoteobjects.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_remoteobjects_private.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_repparser.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_repparser_private.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_service_support_private.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_sql.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_sql_private.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_testlib.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_testlib_private.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_theme_support_private.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_webchannel.pri:
+/usr/lib/qt5/mkspecs/modules/qt_lib_webchannel_private.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_widgets.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_widgets_private.pri:
 /usr/lib/qt5/mkspecs/modules/qt_lib_xcb_qpa_lib_private.pri:
@@ -291,8 +371,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents Link.h Location.h Main2.h Node.h $(DISTDIR)/
-	$(COPY_FILE) --parents Link.cpp Location.cpp Main2.cpp Node.cpp main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents DataHolder.h JsonRequest.h Link.h Location.h Main2.h Node.h dataparser/DataParser.h dataparser/DataParserAPI.h $(DISTDIR)/
+	$(COPY_FILE) --parents DataHolder.cpp JsonRequest.cpp Link.cpp Location.cpp Main2.cpp Node.cpp dataparser/DataParser.cpp dataparser/DataParserAPI.cpp main.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -324,13 +404,27 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/qt5/mkspecs/features/data/dummy.cpp
 	g++ -fno-keep-inline-dllexport -D_GNU_SOURCE -pipe -g -Wall -W -dM -E -o moc_predefs.h /usr/lib/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_Main2.cpp
+compiler_moc_header_make_all: moc_DataHolder.cpp moc_JsonRequest.cpp moc_Main2.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_Main2.cpp
+	-$(DEL_FILE) moc_DataHolder.cpp moc_JsonRequest.cpp moc_Main2.cpp
+moc_DataHolder.cpp: Node.h \
+		Link.h \
+		Location.h \
+		dataparser/DataParser.h \
+		DataHolder.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt5/mkspecs/cygwin-g++ -I/cygdrive/d/NetBeansProjekte/ViewerBackendC/nbproject -I/usr/include/qt5 -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++ -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++/x86_64-pc-cygwin -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++/backward -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include -I/usr/include -I/usr/include/w32api DataHolder.h -o moc_DataHolder.cpp
+
+moc_JsonRequest.cpp: JsonRequest.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt5/mkspecs/cygwin-g++ -I/cygdrive/d/NetBeansProjekte/ViewerBackendC/nbproject -I/usr/include/qt5 -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++ -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++/x86_64-pc-cygwin -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++/backward -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include -I/usr/include -I/usr/include/w32api JsonRequest.h -o moc_JsonRequest.cpp
+
 moc_Main2.cpp: Main2.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt5/mkspecs/cygwin-g++ -I/cygdrive/d/NetBeansProjekte/ViewerBackendC/nbproject -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I. -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++ -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++/x86_64-pc-cygwin -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++/backward -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include -I/usr/include -I/usr/include/w32api Main2.h -o moc_Main2.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt5/mkspecs/cygwin-g++ -I/cygdrive/d/NetBeansProjekte/ViewerBackendC/nbproject -I/usr/include/qt5 -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++ -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++/x86_64-pc-cygwin -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++/backward -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include -I/usr/include -I/usr/include/w32api Main2.h -o moc_Main2.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -344,22 +438,55 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 ####### Compile
 
+build/Debug/LocalCygwin-Windows/DataHolder.o: DataHolder.cpp DataHolder.h \
+		Node.h \
+		Link.h \
+		Location.h \
+		dataparser/DataParser.h \
+		JsonRequest.h \
+		dataparser/DataParserAPI.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/DataHolder.o DataHolder.cpp
+
+build/Debug/LocalCygwin-Windows/JsonRequest.o: JsonRequest.cpp JsonRequest.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/JsonRequest.o JsonRequest.cpp
+
 build/Debug/LocalCygwin-Windows/Link.o: Link.cpp Link.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/Link.o Link.cpp
 
 build/Debug/LocalCygwin-Windows/Location.o: Location.cpp Location.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/Location.o Location.cpp
 
-build/Debug/LocalCygwin-Windows/Main2.o: Main2.cpp Main2.h
+build/Debug/LocalCygwin-Windows/Main2.o: Main2.cpp Main2.h \
+		DataHolder.h \
+		Node.h \
+		Link.h \
+		Location.h \
+		dataparser/DataParser.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/Main2.o Main2.cpp
 
 build/Debug/LocalCygwin-Windows/Node.o: Node.cpp Node.h \
 		Link.h \
-		Location.h
+		Location.h \
+		dataparser/DataParser.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/Node.o Node.cpp
+
+build/Debug/LocalCygwin-Windows/DataParser.o: dataparser/DataParser.cpp dataparser/DataParser.h \
+		Link.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/DataParser.o dataparser/DataParser.cpp
+
+build/Debug/LocalCygwin-Windows/DataParserAPI.o: dataparser/DataParserAPI.cpp dataparser/DataParserAPI.h \
+		dataparser/DataParser.h \
+		Link.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/DataParserAPI.o dataparser/DataParserAPI.cpp
 
 build/Debug/LocalCygwin-Windows/main.o: main.cpp Main2.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/main.o main.cpp
+
+build/Debug/LocalCygwin-Windows/moc_DataHolder.o: moc_DataHolder.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/moc_DataHolder.o moc_DataHolder.cpp
+
+build/Debug/LocalCygwin-Windows/moc_JsonRequest.o: moc_JsonRequest.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/moc_JsonRequest.o moc_JsonRequest.cpp
 
 build/Debug/LocalCygwin-Windows/moc_Main2.o: moc_Main2.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/moc_Main2.o moc_Main2.cpp

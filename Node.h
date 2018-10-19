@@ -11,6 +11,7 @@
 
 #include "Link.h"
 #include "Location.h"
+#include "dataparser/DataParser.h"
 
 #include <QString>
 #include <QSet>
@@ -37,6 +38,8 @@ public:
     
     bool hasValidLocation();
     
+    void fill(DataParser* dp);
+    
     static int convertIpToId(QString ip);
     static QString convertIdToMac(int id);
     static QString convertIdToIp(int id);
@@ -47,7 +50,7 @@ private:
     QSet<Link*> links;
     QString name;
     QString community;
-    NodeType type;
+    NodeType type = STANDARD;
     QString model;
     QString firmwareVersion;
     QString firmwareBase;
