@@ -19,7 +19,7 @@ class DataParser {
 public:
     virtual QJsonObject getData();
     virtual bool hasLinkSet();
-    virtual QSet<Link*>* getLinkSet();
+    virtual void getLinkSet(QSet<Link*>*);
 /*private:
     bool getAutoUpdate();
     signed short getClients();

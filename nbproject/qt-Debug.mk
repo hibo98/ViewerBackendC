@@ -50,29 +50,31 @@ OBJECTS_DIR   = build/Debug/LocalCygwin-Windows/
 
 ####### Files
 
-SOURCES       = DataHolder.cpp \
+SOURCES       = DataGen.cpp \
+		DataHolder.cpp \
 		JsonRequest.cpp \
 		Link.cpp \
 		Location.cpp \
-		Main2.cpp \
 		Node.cpp \
 		dataparser/DataParser.cpp \
 		dataparser/DataParserAPI.cpp \
-		main.cpp moc_DataHolder.cpp \
-		moc_JsonRequest.cpp \
-		moc_Main2.cpp
-OBJECTS       = build/Debug/LocalCygwin-Windows/DataHolder.o \
+		dataparser/DataParserSysinfo.cpp \
+		main.cpp moc_DataGen.cpp \
+		moc_DataHolder.cpp \
+		moc_JsonRequest.cpp
+OBJECTS       = build/Debug/LocalCygwin-Windows/DataGen.o \
+		build/Debug/LocalCygwin-Windows/DataHolder.o \
 		build/Debug/LocalCygwin-Windows/JsonRequest.o \
 		build/Debug/LocalCygwin-Windows/Link.o \
 		build/Debug/LocalCygwin-Windows/Location.o \
-		build/Debug/LocalCygwin-Windows/Main2.o \
 		build/Debug/LocalCygwin-Windows/Node.o \
 		build/Debug/LocalCygwin-Windows/DataParser.o \
 		build/Debug/LocalCygwin-Windows/DataParserAPI.o \
+		build/Debug/LocalCygwin-Windows/DataParserSysinfo.o \
 		build/Debug/LocalCygwin-Windows/main.o \
+		build/Debug/LocalCygwin-Windows/moc_DataGen.o \
 		build/Debug/LocalCygwin-Windows/moc_DataHolder.o \
-		build/Debug/LocalCygwin-Windows/moc_JsonRequest.o \
-		build/Debug/LocalCygwin-Windows/moc_Main2.o
+		build/Debug/LocalCygwin-Windows/moc_JsonRequest.o
 DIST          = /usr/lib/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt5/mkspecs/common/unix.conf \
 		/usr/lib/qt5/mkspecs/common/sanitize.conf \
@@ -141,7 +143,6 @@ DIST          = /usr/lib/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/qt5/mkspecs/cygwin-g++/qmake.conf \
 		/usr/lib/qt5/mkspecs/features/spec_post.prf \
-		nbproject/.qmake.stash \
 		/usr/lib/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/qt5/mkspecs/features/default_pre.prf \
@@ -158,21 +159,23 @@ DIST          = /usr/lib/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/qt5/mkspecs/features/lex.prf \
-		nbproject/nbproject/qt-Debug.pro DataHolder.h \
+		nbproject/nbproject/qt-Debug.pro DataGen.h \
+		DataHolder.h \
 		JsonRequest.h \
 		Link.h \
 		Location.h \
-		Main2.h \
 		Node.h \
 		dataparser/DataParser.h \
-		dataparser/DataParserAPI.h DataHolder.cpp \
+		dataparser/DataParserAPI.h \
+		dataparser/DataParserSysinfo.h DataGen.cpp \
+		DataHolder.cpp \
 		JsonRequest.cpp \
 		Link.cpp \
 		Location.cpp \
-		Main2.cpp \
 		Node.cpp \
 		dataparser/DataParser.cpp \
 		dataparser/DataParserAPI.cpp \
+		dataparser/DataParserSysinfo.cpp \
 		main.cpp
 QMAKE_TARGET  = ViewerBackendC
 DESTDIR       = dist/Debug/LocalCygwin-Windows/
@@ -254,7 +257,6 @@ qttmp-Debug.mk: nbproject/qt-Debug.pro /usr/lib/qt5/mkspecs/cygwin-g++/qmake.con
 		/usr/lib/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/qt5/mkspecs/cygwin-g++/qmake.conf \
 		/usr/lib/qt5/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/usr/lib/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/qt5/mkspecs/features/default_pre.prf \
@@ -341,7 +343,6 @@ qttmp-Debug.mk: nbproject/qt-Debug.pro /usr/lib/qt5/mkspecs/cygwin-g++/qmake.con
 /usr/lib/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/qt5/mkspecs/cygwin-g++/qmake.conf:
 /usr/lib/qt5/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /usr/lib/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/qt5/mkspecs/features/default_pre.prf:
@@ -374,8 +375,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents DataHolder.h JsonRequest.h Link.h Location.h Main2.h Node.h dataparser/DataParser.h dataparser/DataParserAPI.h $(DISTDIR)/
-	$(COPY_FILE) --parents DataHolder.cpp JsonRequest.cpp Link.cpp Location.cpp Main2.cpp Node.cpp dataparser/DataParser.cpp dataparser/DataParserAPI.cpp main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents DataGen.h DataHolder.h JsonRequest.h Link.h Location.h Node.h dataparser/DataParser.h dataparser/DataParserAPI.h dataparser/DataParserSysinfo.h $(DISTDIR)/
+	$(COPY_FILE) --parents DataGen.cpp DataHolder.cpp JsonRequest.cpp Link.cpp Location.cpp Node.cpp dataparser/DataParser.cpp dataparser/DataParserAPI.cpp dataparser/DataParserSysinfo.cpp main.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -407,9 +408,19 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/qt5/mkspecs/features/data/dummy.cpp
 	g++ -fno-keep-inline-dllexport -D_GNU_SOURCE -pipe -g -Wall -W -dM -E -o moc_predefs.h /usr/lib/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_DataHolder.cpp moc_JsonRequest.cpp moc_Main2.cpp
+compiler_moc_header_make_all: moc_DataGen.cpp moc_DataHolder.cpp moc_JsonRequest.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_DataHolder.cpp moc_JsonRequest.cpp moc_Main2.cpp
+	-$(DEL_FILE) moc_DataGen.cpp moc_DataHolder.cpp moc_JsonRequest.cpp
+moc_DataGen.cpp: DataHolder.h \
+		Node.h \
+		Link.h \
+		Location.h \
+		dataparser/DataParser.h \
+		DataGen.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt5/mkspecs/cygwin-g++ -I/cygdrive/d/NetBeansProjekte/ViewerBackendC/nbproject -I/usr/include/qt5 -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++ -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++/x86_64-pc-cygwin -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++/backward -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include -I/usr/include -I/usr/include/w32api DataGen.h -o moc_DataGen.cpp
+
 moc_DataHolder.cpp: Node.h \
 		Link.h \
 		Location.h \
@@ -424,11 +435,6 @@ moc_JsonRequest.cpp: JsonRequest.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt5/mkspecs/cygwin-g++ -I/cygdrive/d/NetBeansProjekte/ViewerBackendC/nbproject -I/usr/include/qt5 -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++ -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++/x86_64-pc-cygwin -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++/backward -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include -I/usr/include -I/usr/include/w32api JsonRequest.h -o moc_JsonRequest.cpp
 
-moc_Main2.cpp: Main2.h \
-		moc_predefs.h \
-		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt5/mkspecs/cygwin-g++ -I/cygdrive/d/NetBeansProjekte/ViewerBackendC/nbproject -I/usr/include/qt5 -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++ -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++/x86_64-pc-cygwin -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/c++/backward -I/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include -I/usr/include -I/usr/include/w32api Main2.h -o moc_Main2.cpp
-
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
 compiler_yacc_decl_make_all:
@@ -440,6 +446,14 @@ compiler_lex_clean:
 compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
+
+build/Debug/LocalCygwin-Windows/DataGen.o: DataGen.cpp DataGen.h \
+		DataHolder.h \
+		Node.h \
+		Link.h \
+		Location.h \
+		dataparser/DataParser.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/DataGen.o DataGen.cpp
 
 build/Debug/LocalCygwin-Windows/DataHolder.o: DataHolder.cpp DataHolder.h \
 		Node.h \
@@ -459,14 +473,6 @@ build/Debug/LocalCygwin-Windows/Link.o: Link.cpp Link.h
 build/Debug/LocalCygwin-Windows/Location.o: Location.cpp Location.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/Location.o Location.cpp
 
-build/Debug/LocalCygwin-Windows/Main2.o: Main2.cpp Main2.h \
-		DataHolder.h \
-		Node.h \
-		Link.h \
-		Location.h \
-		dataparser/DataParser.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/Main2.o Main2.cpp
-
 build/Debug/LocalCygwin-Windows/Node.o: Node.cpp Node.h \
 		Link.h \
 		Location.h \
@@ -482,17 +488,31 @@ build/Debug/LocalCygwin-Windows/DataParserAPI.o: dataparser/DataParserAPI.cpp da
 		Link.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/DataParserAPI.o dataparser/DataParserAPI.cpp
 
-build/Debug/LocalCygwin-Windows/main.o: main.cpp Main2.h
+build/Debug/LocalCygwin-Windows/DataParserSysinfo.o: dataparser/DataParserSysinfo.cpp DataGen.h \
+		DataHolder.h \
+		Node.h \
+		Link.h \
+		Location.h \
+		dataparser/DataParser.h \
+		dataparser/DataParserSysinfo.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/DataParserSysinfo.o dataparser/DataParserSysinfo.cpp
+
+build/Debug/LocalCygwin-Windows/main.o: main.cpp DataGen.h \
+		DataHolder.h \
+		Node.h \
+		Link.h \
+		Location.h \
+		dataparser/DataParser.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/main.o main.cpp
+
+build/Debug/LocalCygwin-Windows/moc_DataGen.o: moc_DataGen.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/moc_DataGen.o moc_DataGen.cpp
 
 build/Debug/LocalCygwin-Windows/moc_DataHolder.o: moc_DataHolder.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/moc_DataHolder.o moc_DataHolder.cpp
 
 build/Debug/LocalCygwin-Windows/moc_JsonRequest.o: moc_JsonRequest.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/moc_JsonRequest.o moc_JsonRequest.cpp
-
-build/Debug/LocalCygwin-Windows/moc_Main2.o: moc_Main2.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/moc_Main2.o moc_Main2.cpp
 
 ####### Install
 

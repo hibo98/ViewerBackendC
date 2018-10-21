@@ -9,7 +9,7 @@
 #include <qcoreapplication.h>
 #include <qobject.h>
 #include <qtimer.h>
-#include "Main2.h"
+#include "DataGen.h"
 
 int main(int argc, char *argv[]) {
     // initialize resources, if needed
@@ -19,9 +19,9 @@ int main(int argc, char *argv[]) {
 
     // create and show your widgets here
 
-    Main2 m;
+    DataGen m;
     
-    QObject::connect(&m, &Main2::quit, &app, &QCoreApplication::quit);
+    QObject::connect(&m, &DataGen::quit, &app, &QCoreApplication::quit);
     
     QTimer::singleShot(1, &m, SLOT(stop()));
     

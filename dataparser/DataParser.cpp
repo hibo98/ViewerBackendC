@@ -15,7 +15,6 @@ bool DataParser::hasLinkSet() {
     return false;
 }
 
-QSet<Link*>* DataParser::getLinkSet() {
-    return nullptr;
+void DataParser::getLinkSet(QSet<Link*>*) {
 }
 

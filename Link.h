@@ -21,18 +21,23 @@ enum LinkType {
 
 class Link {
 public:
-    Link(LinkType type, signed char sourceTq, signed char targetTq, Node* source, Node* target);
+    Link(LinkType type, Node* source, Node* target, signed char sourceTq = -1, signed char targetTq = -1);
     Link(const Link& orig);
     virtual ~Link();
 
     Node* getSource();
     Node* getTarget();
     signed char getSourceTq();
+    void setSourceTq(signed char tq);
     signed char getTargetTq();
+    void setTargetTq(signed char tq);
     LinkType getLinkType();
 
     QString getTypeHopglass();
     QString getTypeMeshViewer();
+    
+    static LinkType getLinkTypeByInterface(QString s);
+    static LinkType getLinkTypeByType(QString s);
 private:
     signed char sourceTq = -1;
     signed char targetTq = -1;

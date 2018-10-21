@@ -8,7 +8,7 @@
 
 #include "Link.h"
 
-Link::Link(LinkType type, signed char sourceTq, signed char targetTq, Node* source, Node* target) {
+Link::Link(LinkType type, Node* source, Node* target, signed char sourceTq, signed char targetTq) {
     this->type = type;
     this->sourceTq = sourceTq;
     this->targetTq = targetTq;
@@ -16,7 +16,7 @@ Link::Link(LinkType type, signed char sourceTq, signed char targetTq, Node* sour
     this->target = target;
 }
 
-Link::Link(const Link& orig) : Link(orig.type, orig.sourceTq, orig.targetTq, orig.source, orig.target) {
+Link::Link(const Link& orig) : Link(orig.type, orig.source, orig.target, orig.sourceTq, orig.targetTq) {
 }
 
 Link::~Link() {
@@ -34,8 +34,16 @@ signed char Link::getSourceTq() {
     return this->sourceTq;
 }
 
+void Link::setSourceTq(signed char tq) {
+    this->sourceTq = tq;
+}
+
 signed char Link::getTargetTq() {
     return this->targetTq;
+}
+
+void Link::setTargetTq(signed char tq) {
+    this->targetTq = tq;
 }
 
 LinkType Link::getLinkType() {
@@ -66,3 +74,28 @@ QString Link::getTypeMeshViewer() {
     }
 }
 
+LinkType Link::getLinkTypeByInterface(QString s) {
+    s = s.toLower();
+    if (s == "wlan0") {
+        return WIRELESS;
+    } else if (s == "br-tbb" || s == "br-meshwire" || s == "br-mesh_lan" || s == "br-mesh_wan") {
+        return OTHER;
+    } else if (s == "tbb-fastd" || s == "tbb_fastd" || s == "tbb_fastd2") {
+        return TUNNEL;
+    } else {
+        return OTHER;
+    }
+}
+
+LinkType Link::getLinkTypeByType(QString s) {
+    s = s.toLower();
+    if (s == "lan") {
+        return OTHER;
+    } else if (s == "wifi") {
+        return WIRELESS;
+    } else if (s == "backbone") {
+        return TUNNEL;
+    } else {
+        return OTHER;
+    }
+}

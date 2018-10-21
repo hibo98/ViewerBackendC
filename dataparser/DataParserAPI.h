@@ -22,12 +22,15 @@ public:
     
     QJsonObject getData() override;
     bool hasLinkSet() override;
-    QSet<Link*>* getLinkSet() override;
+    void getLinkSet(QSet<Link*>*) override;
 private:
     QJsonObject json;
     QJsonObject r;
+    bool getAutoUpdate();
     int getClients();
+    QString getFirmwareVersion();
     long getFirstseen();
+    QString getGatewayIp();
     long getLastseen();
     double getLongitude();
     double getLatitude();

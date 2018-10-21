@@ -57,11 +57,20 @@ bool Node::hasValidLocation() {
 void Node::fill(DataParser* dp) {
     QJsonObject json = dp->getData();
     
+    if (json.contains("autoupdate")) {
+        this->autoupdate = json.value("autoupdate").toBool();
+    }
     if (json.contains("clients")) {
         this->clients = (signed char) json.value("clients").toInt();
     }
+    if (json.contains("firmwareVersion")) {
+        this->firmwareVersion = json.value("firmwareVersion").toString();
+    }
     if (json.contains("firstseen")) {
         this->firstseen = json.value("firstseen").toString().toLong();
+    }
+    if (json.contains("gatewayIp")) {
+        this->gatewayIp = json.value("gatewayIp").toString();
     }
     if (json.contains("lastseen")) {
         this->firstseen = json.value("firstseen").toString().toLong();
@@ -79,7 +88,7 @@ void Node::fill(DataParser* dp) {
         this->gateway = json.value("gateway").toBool();
     }
     if (dp->hasLinkSet()) {
-        this->links = *dp->getLinkSet();
+        dp->getLinkSet(&this->links);
     }
 }
 
