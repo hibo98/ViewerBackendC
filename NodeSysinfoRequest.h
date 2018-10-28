@@ -16,8 +16,6 @@
 #include <QObject>
 #include <QString>
 
-#include <QNetworkReply>
-
 class NodeSysinfoRequest : public QObject, public QRunnable {
     Q_OBJECT
 
@@ -29,7 +27,7 @@ public:
 
 public slots:
     void success(QJsonDocument doc);
-    void error(QNetworkReply::NetworkError error, QString eStr);
+    void error(QString eStr);
 
 private:
     Node* n;

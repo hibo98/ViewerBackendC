@@ -11,6 +11,8 @@
 #include <iostream>
 #include <QString>
 
+#include <QNetworkReply>
+
 JsonRequest::JsonRequest(QUrl* url) : QObject(nullptr) {
     this->url = url;
 }
@@ -25,7 +27,7 @@ void JsonRequest::run() {
                 QJsonDocument doc = QJsonDocument::fromJson(answer.toUtf8());
                 emit result(doc);
             } else {
-                emit error(e, reply->errorString());
+                emit error(reply->errorString());
             }
         }
     );

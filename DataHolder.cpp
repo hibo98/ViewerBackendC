@@ -82,7 +82,7 @@ void DataHolder::processAPI(QJsonDocument doc) {
     emit processedAPI(false);
 }
 
-void DataHolder::processAPIError(QNetworkReply::NetworkError error, QString eStr) {
+void DataHolder::processAPIError(QString eStr) {
     std::cerr << eStr.toStdString() << std::endl;
     emit processedAPI(true);
 }

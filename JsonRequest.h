@@ -15,7 +15,6 @@
 #include <QUrl>
 
 #include <QNetworkAccessManager>
-#include <QNetworkReply>
 #include <QNetworkRequest>
 
 class JsonRequest : public QObject, public QRunnable {
@@ -31,7 +30,7 @@ private:
 
 signals:
     void result(QJsonDocument doc);
-    void error(QNetworkReply::NetworkError error, QString eStr);
+    void error(QString eStr);
 };
 
 #endif /* JSONREQUEST_H */

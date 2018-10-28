@@ -16,8 +16,6 @@
 #include <QObject>
 #include <QString>
 
-#include <QNetworkReply>
-
 class DataHolder : public QObject {
     Q_OBJECT
 
@@ -35,7 +33,7 @@ public:
 
 public slots:
     void processAPI(QJsonDocument doc);
-    void processAPIError(QNetworkReply::NetworkError error, QString eStr);
+    void processAPIError(QString eStr);
 
 signals:
     void processedAPI(bool error);

@@ -42,7 +42,7 @@ void NodeSysinfoRequest::success(QJsonDocument doc) {
     }    
 }
 
-void NodeSysinfoRequest::error(QNetworkReply::NetworkError error, QString eStr) {
+void NodeSysinfoRequest::error(QString eStr) {
     this->n->setOnline(false);
     this->run();
 }
