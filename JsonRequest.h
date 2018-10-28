@@ -9,31 +9,29 @@
 #ifndef JSONREQUEST_H
 #define JSONREQUEST_H
 
+#include <QJsonDocument>
 #include <QObject>
-#include <QThread>
+#include <QRunnable>
 #include <QUrl>
 
-#include <QtNetwork>
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
 #include <QNetworkRequest>
 
-class JsonRequest : public QObject {
-
+class JsonRequest : public QObject, public QRunnable {
     Q_OBJECT
 
 public:
-    explicit JsonRequest(QUrl* url, QObject* parent = nullptr);
-    void start();
+    explicit JsonRequest(QUrl* url);
+    void run();
 private:
-    QThread* thread;
     QUrl* url;
     QNetworkAccessManager* manager;
     QNetworkRequest request;
-private slots:
-    void process();
-    
+
 signals:
     void result(QJsonDocument doc);
+    void error(QNetworkReply::NetworkError error, QString eStr);
 };
 
 #endif /* JSONREQUEST_H */

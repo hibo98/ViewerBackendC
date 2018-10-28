@@ -92,6 +92,10 @@ void Node::fill(DataParser* dp) {
     }
 }
 
+void Node::setOnline(bool online) {
+    this->online = online;
+}
+
 int Node::convertIpToId(QString ip) {
     QStringList split = ip.split('.');
     if (split.size() == 4) {

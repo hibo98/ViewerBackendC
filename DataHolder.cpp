@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <iostream>
 #include <QJsonArray>
+#include <QThreadPool>
 
 DataHolder::DataHolder() : QObject(nullptr){
 }
@@ -57,13 +58,15 @@ QMap<int, QMap<int, Link*>*> DataHolder::getLinks() {
 
 void DataHolder::requestAPI() {
     JsonRequest* request = new JsonRequest(new QUrl("http://api.freifunk-dresden.de/freifunk-niklas-hopglass.json"));
-    QObject::connect(request, &JsonRequest::result, this, &DataHolder::processAPI);
-    request->start();
+    connect(request, &JsonRequest::result, this, &DataHolder::processAPI);
+    connect(request, &JsonRequest::error, this, &DataHolder::processAPIError);
+    QThreadPool::globalInstance()->start(request);
 }
 
 void DataHolder::processAPI(QJsonDocument doc) {
     if (!doc.isArray()) {
         std::cerr << "No Array!" << std::endl;
+        return;
     }
     QJsonArray array = doc.array();
     for (int i = 0; i < array.size(); i++) {
@@ -73,9 +76,14 @@ void DataHolder::processAPI(QJsonDocument doc) {
             int id = o.value("id").toString("-1").toInt();
             if (id != -1) {
                 this->getNode(id)->fill(new DataParserAPI(o));
-                //std::cout << id << ": " << this->getNode(id)->getHostname().toStdString() << std::endl;
             }
         }
     }
+    emit processedAPI(false);
+}
+
+void DataHolder::processAPIError(QNetworkReply::NetworkError error, QString eStr) {
+    std::cerr << eStr.toStdString() << std::endl;
+    emit processedAPI(true);
 }
 

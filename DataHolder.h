@@ -14,6 +14,9 @@
 #include <QJsonDocument>
 #include <QMap>
 #include <QObject>
+#include <QString>
+
+#include <QNetworkReply>
 
 class DataHolder : public QObject {
     Q_OBJECT
@@ -32,7 +35,11 @@ public:
 
 public slots:
     void processAPI(QJsonDocument doc);
+    void processAPIError(QNetworkReply::NetworkError error, QString eStr);
 
+signals:
+    void processedAPI(bool error);
+    
 private:
     QMap<int, Node*> nodes;
     QMap<int, QMap<int, Link*>*> links;

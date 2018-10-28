@@ -22,13 +22,13 @@ public:
     static DataHolder* getDataHolder();
 
 public slots:
-    void stop();
-
-signals:
-    void quit();
+    void start();
+    void processedAPI(bool error);
 
 private:
     static DataHolder* dh;
+    void processNodes();
+    void stop();
 };
 
 #endif /* MAIN2_H */

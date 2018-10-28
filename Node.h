@@ -40,6 +40,8 @@ public:
     
     void fill(DataParser* dp);
     
+    void setOnline(bool online);
+    
     static int convertIpToId(QString ip);
     static QString convertIdToMac(int id);
     static QString convertIdToIp(int id);
