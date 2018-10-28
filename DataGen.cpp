@@ -10,6 +10,7 @@
 #include "Node.h"
 #include "NodeSysinfoRequest.h"
 
+#include <iostream>
 #include <QCoreApplication>
 #include <QList>
 #include <QThreadPool>
@@ -21,6 +22,8 @@ DataGen::DataGen(QObject*parent) : QObject(parent) {
 }
 
 void DataGen::start() {
+    std::cout << "Welcome to ViewerBackend" <<std::endl;
+    std::cout << "Requesting API..." <<std::endl;
     QObject::connect(dh, &DataHolder::processedAPI, this, &DataGen::processedAPI);
     DataGen::dh->requestAPI();
 }
@@ -34,6 +37,7 @@ void DataGen::processedAPI(bool error) {
 }
 
 void DataGen::processNodes() {
+    std::cout << "Requesting Nodes Sysinfo..." <<std::endl;
     QList<Node*> values = DataGen::dh->getNodes().values();
     QThreadPool pool;
     for (int i = 0; i < values.size(); i++) {
@@ -41,6 +45,7 @@ void DataGen::processNodes() {
         NodeSysinfoRequest* request = new NodeSysinfoRequest(node);
         pool.start(request);
     }
+    pool.waitForDone();
 }
 
 DataHolder* DataGen::getDataHolder() {
