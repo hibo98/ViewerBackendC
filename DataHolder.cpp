@@ -60,7 +60,7 @@ void DataHolder::requestAPI() {
     JsonRequest* request = new JsonRequest(new QUrl("http://api.freifunk-dresden.de/freifunk-niklas-hopglass.json"));
     connect(request, &JsonRequest::result, this, &DataHolder::processAPI);
     connect(request, &JsonRequest::error, this, &DataHolder::processAPIError);
-    QThreadPool::globalInstance()->start(request);
+    request->run();
 }
 
 void DataHolder::processAPI(QJsonDocument doc) {
