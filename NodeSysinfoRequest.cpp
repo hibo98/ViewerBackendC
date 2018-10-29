@@ -15,7 +15,7 @@
 
 NodeSysinfoRequest::NodeSysinfoRequest(Node* n) : QObject(nullptr) {
     this->n = n;
-    this->request = new JsonRequest(new QUrl("http://" + Node::convertIdToIp(this->n->getId()) + "/sysinfo-json.cgi"));
+    this->request = new JsonRequest(new QUrl("http://" + this->n->getIpAddress() + "/sysinfo-json.cgi"));
     connect(this->request, &JsonRequest::result, this, &NodeSysinfoRequest::success);
     connect(this->request, &JsonRequest::error, this, &NodeSysinfoRequest::error);
 }

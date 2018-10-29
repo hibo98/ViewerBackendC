@@ -27,6 +27,8 @@ public:
     virtual ~Node();
 
     QString getHostname();
+    QString getFakeMac();
+    QString getIpAddress(bool subnet201 = false);
     
     int getId();
     QSet<Link*> getLinks();
@@ -43,9 +45,6 @@ public:
     void setOnline(bool online);
     
     static int convertIpToId(QString ip);
-    static QString convertIdToMac(int id);
-    static QString convertIdToIp(int id);
-    static QString convertIdToIp(int id, bool subnet201);
     
 private:
     int id = -1;

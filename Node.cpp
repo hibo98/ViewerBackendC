@@ -26,6 +26,19 @@ QString Node::getHostname() {
     }
 }
 
+QString Node::getFakeMac() {
+    return QString("ff:dd:00:00:%1:%2")
+            .arg(this->id / 255 % 256, 0, 16)
+            .arg((this->id % 255) + 1, 0, 16);
+}
+
+QString Node::getIpAddress(bool subnet201) {
+    return QString("10.%1.%2.%3")
+            .arg(subnet201 ? 201 : 200)
+            .arg(this->id / 255 % 256)
+            .arg((this->id % 255) + 1);
+}
+
 int Node::getId() {
     return this->id;
 }
@@ -102,21 +115,4 @@ int Node::convertIpToId(QString ip) {
         return split.at(2).toInt() * 255 + split.at(3).toInt() - 1;
     }
     return -1;
-}
-
-QString Node::convertIdToMac(int id) {
-    return QString("ff:dd:00:00:%1:%2")
-            .arg(id / 255 % 256, 0, 16)
-            .arg((id % 255) + 1, 0, 16);
-}
-
-QString Node::convertIdToIp(int id) {
-    return Node::convertIdToIp(id, false);
-}
-
-QString Node::convertIdToIp(int id, bool subnet201) {
-    return QString("10.%1.%2.%3")
-            .arg(subnet201 ? 201 : 200)
-            .arg(id / 255 % 256)
-            .arg((id % 255) + 1);
 }
