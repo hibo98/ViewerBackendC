@@ -43,6 +43,9 @@ void NodeSysinfoRequest::success(QJsonDocument doc) {
 }
 
 void NodeSysinfoRequest::error(QString eStr) {
+    if (this->retryCount == 0) {
+        std::cerr << "Node " << this->n->getId() << ": " << eStr.toStdString() << std::endl;
+    }
     this->n->setOnline(false);
     this->run();
 }
