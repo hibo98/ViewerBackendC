@@ -30,7 +30,26 @@ DataParserSysinfo::~DataParserSysinfo() {
 }
 
 QJsonObject DataParserSysinfo::getData() {
-    //@TODO: Add information!
+    if (!this->r.empty()) {
+        return this->r;
+    }
+    this->r.insert("autoupdate", QJsonValue(this->getAutoUpdate()));
+    this->r.insert("clients", QJsonValue(this->getClients()));
+    this->r.insert("community", QJsonValue(this->getCommunity()));
+    this->r.insert("email", QJsonValue(this->getEMail()));
+    this->r.insert("firmwareBase", QJsonValue(this->getFirmwareBase()));
+    this->r.insert("firmwareVersion", QJsonValue(this->getFirmwareVersion()));
+    this->r.insert("gatewayIp", QJsonValue(this->getGatewayIp()));
+    this->r.insert("lastseen", QJsonValue(QString::number(this->getLastseen())));
+    this->r.insert("lat", QJsonValue(this->getLatitude()));
+    this->r.insert("lon", QJsonValue(this->getLongitude()));
+    this->r.insert("load", QJsonValue(this->getLoadAvg()));
+    this->r.insert("memory", QJsonValue(this->getMemoryUsage()));
+    this->r.insert("model", QJsonValue(this->getModel()));
+    this->r.insert("name", QJsonValue(this->getName()));
+    this->r.insert("role", QJsonValue(this->getRole()));
+    this->r.insert("uptime", QJsonValue(this->getUptime()));
+    this->r.insert("online", QJsonValue(this->isOnline()));
     return this->r;
 }
 

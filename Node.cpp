@@ -76,6 +76,15 @@ void Node::fill(DataParser* dp) {
     if (json.contains("clients")) {
         this->clients = (signed char) json.value("clients").toInt();
     }
+    if (json.contains("community")) {
+        this->community = json.value("community").toString();
+    }
+    if (json.contains("email")) {
+        this->email = json.value("email").toString();
+    }
+    if (json.contains("firmwareBase")) {
+        this->firmwareBase = json.value("firmwareBase").toString();
+    }
     if (json.contains("firmwareVersion")) {
         this->firmwareVersion = json.value("firmwareVersion").toString();
     }
@@ -91,8 +100,23 @@ void Node::fill(DataParser* dp) {
     if (json.contains("lat") && json.contains("lon")) {
         this->location = new Location(json.value("lat").toDouble(), json.value("lon").toDouble());
     }
+    if (json.contains("load")) {
+        this->avgLoad = json.value("load").toDouble();
+    }
+    if (json.contains("memory")) {
+        this->memoryUsage = json.value("memory").toDouble();
+    }
+    if (json.contains("model")) {
+        this->model = json.value("model").toString();
+    }
     if (json.contains("name")) {
         this->name = json.value("name").toString();
+    }
+    if (json.contains("role")) {
+        this->type = (NodeType) json.value("role").toInt();
+    }
+    if (json.contains("uptime")) {
+        this->uptime = json.value("uptime").toDouble();
     }
     if (json.contains("online")) {
         this->online = json.value("online").toBool();

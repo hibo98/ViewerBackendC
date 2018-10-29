@@ -57,10 +57,10 @@ private:
     QString firmwareBase;
     QString email;
     bool online;
-    float uptime;
-    float memoryUsage;
+    double uptime;
+    double memoryUsage;
     signed char clients;
-    float avgLoad;
+    double avgLoad;
     bool gateway;
     long lastseen = -1;
     long firstseen = -1;
