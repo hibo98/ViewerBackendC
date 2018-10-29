@@ -66,6 +66,7 @@ void DataHolder::requestAPI() {
 void DataHolder::processAPI(QJsonDocument doc) {
     if (!doc.isArray()) {
         std::cerr << "No Array!" << std::endl;
+        emit processedAPI(true);
         return;
     }
     QJsonArray array = doc.array();
