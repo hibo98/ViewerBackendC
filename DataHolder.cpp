@@ -57,10 +57,10 @@ QMap<int, QMap<int, Link*>*> DataHolder::getLinks() {
 }
 
 void DataHolder::requestAPI() {
-    JsonRequest* request = new JsonRequest(QUrl("http://api.freifunk-dresden.de/freifunk-niklas-hopglass.json"));
-    connect(request, &JsonRequest::result, this, &DataHolder::processAPI);
-    connect(request, &JsonRequest::error, this, &DataHolder::processAPIError);
-    request->run();
+    JsonRequest request(QUrl("http://api.freifunk-dresden.de/freifunk-niklas-hopglass.json"));
+    connect(&request, &JsonRequest::result, this, &DataHolder::processAPI);
+    connect(&request, &JsonRequest::error, this, &DataHolder::processAPIError);
+    request.run();
 }
 
 void DataHolder::processAPI(QJsonDocument doc) {
