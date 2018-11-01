@@ -27,7 +27,7 @@ private:
     QUrl* url;
     QNetworkAccessManager* manager;
     QNetworkRequest request;
-
+    
 signals:
     void result(QJsonDocument doc);
     void error(QString eStr);

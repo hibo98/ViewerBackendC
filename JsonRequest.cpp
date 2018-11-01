@@ -29,6 +29,9 @@ void JsonRequest::run() {
             } else {
                 emit error(reply->errorString());
             }
+            delete this->url;
+            delete reply;
+            delete this->manager;
         }
     );
     
