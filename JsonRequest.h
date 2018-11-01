@@ -21,10 +21,12 @@ class JsonRequest : public QObject, public QRunnable {
     Q_OBJECT
 
 public:
-    explicit JsonRequest(QUrl* url);
+    explicit JsonRequest(QUrl url);
+    virtual ~JsonRequest();
+    
     void run();
 private:
-    QUrl* url;
+    QUrl url;
     QNetworkAccessManager* manager;
     QNetworkRequest request;
     

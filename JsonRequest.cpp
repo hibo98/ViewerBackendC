@@ -13,8 +13,12 @@
 
 #include <QNetworkReply>
 
-JsonRequest::JsonRequest(QUrl* url) : QObject(nullptr) {
+JsonRequest::JsonRequest(QUrl url) : QObject(nullptr) {
     this->url = url;
+}
+
+JsonRequest::~JsonRequest() {
+    delete this->manager;
 }
 
 void JsonRequest::run() {
@@ -29,13 +33,10 @@ void JsonRequest::run() {
             } else {
                 emit error(reply->errorString());
             }
-            delete this->url;
-            delete reply;
-            delete this->manager;
         }
     );
     
-    this->request.setUrl(*this->url);
+    this->request.setUrl(this->url);
     this->manager->get(this->request);
 }
 
