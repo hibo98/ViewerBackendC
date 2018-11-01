@@ -6,11 +6,12 @@
  * Created on 19. Oktober 2018, 19:46
  */
 
-#include "../DataGen.h"
 #include "DataParserSysinfo.h"
+#include "../DataGen.h"
+#include "../Util.h"
 
-#include <chrono>
 #include <QJsonArray>
+#include <QStringList>
 #include <QUrl>
 
 DataParserSysinfo::DataParserSysinfo(QJsonObject json, int version) {
@@ -146,7 +147,7 @@ QString DataParserSysinfo::getGatewayIp() {
 }
 
 long DataParserSysinfo::getLastseen() {
-    return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    return Util::getCurrentTimestamp();
 }
 
 double DataParserSysinfo::getLoadAvg() {

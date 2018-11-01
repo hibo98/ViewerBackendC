@@ -8,6 +8,8 @@
 
 #include "Location.h"
 
+#include <QJsonValue>
+
 Location::Location(float latitude, float longitude) {
     this->latitude = latitude;
     this->longitude = longitude;
@@ -29,5 +31,12 @@ float Location::getLongitude() {
 
 bool Location::isValid() {
     return true;
+}
+
+QJsonObject Location::toJson() {
+    QJsonObject location;
+    location.insert("latitude", QJsonValue(this->latitude));
+    location.insert("longitude", QJsonValue(this->longitude));
+    return location;
 }
 

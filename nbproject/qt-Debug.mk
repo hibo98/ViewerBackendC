@@ -57,6 +57,7 @@ SOURCES       = DataGen.cpp \
 		Location.cpp \
 		Node.cpp \
 		NodeSysinfoRequest.cpp \
+		Util.cpp \
 		dataparser/DataParser.cpp \
 		dataparser/DataParserAPI.cpp \
 		dataparser/DataParserSysinfo.cpp \
@@ -71,6 +72,7 @@ OBJECTS       = build/Debug/LocalCygwin-Windows/DataGen.o \
 		build/Debug/LocalCygwin-Windows/Location.o \
 		build/Debug/LocalCygwin-Windows/Node.o \
 		build/Debug/LocalCygwin-Windows/NodeSysinfoRequest.o \
+		build/Debug/LocalCygwin-Windows/Util.o \
 		build/Debug/LocalCygwin-Windows/DataParser.o \
 		build/Debug/LocalCygwin-Windows/DataParserAPI.o \
 		build/Debug/LocalCygwin-Windows/DataParserSysinfo.o \
@@ -170,6 +172,7 @@ DIST          = /usr/lib/qt5/mkspecs/features/spec_pre.prf \
 		Location.h \
 		Node.h \
 		NodeSysinfoRequest.h \
+		Util.h \
 		dataparser/DataParser.h \
 		dataparser/DataParserAPI.h \
 		dataparser/DataParserSysinfo.h DataGen.cpp \
@@ -179,6 +182,7 @@ DIST          = /usr/lib/qt5/mkspecs/features/spec_pre.prf \
 		Location.cpp \
 		Node.cpp \
 		NodeSysinfoRequest.cpp \
+		Util.cpp \
 		dataparser/DataParser.cpp \
 		dataparser/DataParserAPI.cpp \
 		dataparser/DataParserSysinfo.cpp \
@@ -381,8 +385,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents DataGen.h DataHolder.h JsonRequest.h Link.h Location.h Node.h NodeSysinfoRequest.h dataparser/DataParser.h dataparser/DataParserAPI.h dataparser/DataParserSysinfo.h $(DISTDIR)/
-	$(COPY_FILE) --parents DataGen.cpp DataHolder.cpp JsonRequest.cpp Link.cpp Location.cpp Node.cpp NodeSysinfoRequest.cpp dataparser/DataParser.cpp dataparser/DataParserAPI.cpp dataparser/DataParserSysinfo.cpp main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents DataGen.h DataHolder.h JsonRequest.h Link.h Location.h Node.h NodeSysinfoRequest.h Util.h dataparser/DataParser.h dataparser/DataParserAPI.h dataparser/DataParserSysinfo.h $(DISTDIR)/
+	$(COPY_FILE) --parents DataGen.cpp DataHolder.cpp JsonRequest.cpp Link.cpp Location.cpp Node.cpp NodeSysinfoRequest.cpp Util.cpp dataparser/DataParser.cpp dataparser/DataParserAPI.cpp dataparser/DataParserSysinfo.cpp main.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -494,7 +498,8 @@ build/Debug/LocalCygwin-Windows/Location.o: Location.cpp Location.h
 build/Debug/LocalCygwin-Windows/Node.o: Node.cpp Node.h \
 		Link.h \
 		Location.h \
-		dataparser/DataParser.h
+		dataparser/DataParser.h \
+		Util.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/Node.o Node.cpp
 
 build/Debug/LocalCygwin-Windows/NodeSysinfoRequest.o: NodeSysinfoRequest.cpp NodeSysinfoRequest.h \
@@ -506,6 +511,9 @@ build/Debug/LocalCygwin-Windows/NodeSysinfoRequest.o: NodeSysinfoRequest.cpp Nod
 		dataparser/DataParserSysinfo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/NodeSysinfoRequest.o NodeSysinfoRequest.cpp
 
+build/Debug/LocalCygwin-Windows/Util.o: Util.cpp Util.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/Util.o Util.cpp
+
 build/Debug/LocalCygwin-Windows/DataParser.o: dataparser/DataParser.cpp dataparser/DataParser.h \
 		Link.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/DataParser.o dataparser/DataParser.cpp
@@ -515,13 +523,14 @@ build/Debug/LocalCygwin-Windows/DataParserAPI.o: dataparser/DataParserAPI.cpp da
 		Link.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/DataParserAPI.o dataparser/DataParserAPI.cpp
 
-build/Debug/LocalCygwin-Windows/DataParserSysinfo.o: dataparser/DataParserSysinfo.cpp DataGen.h \
-		DataHolder.h \
-		Node.h \
-		Link.h \
-		Location.h \
+build/Debug/LocalCygwin-Windows/DataParserSysinfo.o: dataparser/DataParserSysinfo.cpp dataparser/DataParserSysinfo.h \
 		dataparser/DataParser.h \
-		dataparser/DataParserSysinfo.h
+		Link.h \
+		Node.h \
+		Location.h \
+		DataGen.h \
+		DataHolder.h \
+		Util.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/DataParserSysinfo.o dataparser/DataParserSysinfo.cpp
 
 build/Debug/LocalCygwin-Windows/main.o: main.cpp DataGen.h \

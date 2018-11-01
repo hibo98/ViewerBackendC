@@ -9,6 +9,8 @@
 #ifndef LOCATION_H
 #define LOCATION_H
 
+#include <QJsonObject>
+
 class Location {
 public:
     Location(float latitude, float longitude);
@@ -19,7 +21,7 @@ public:
     float getLongitude();
     
     bool isValid();
-    //JsonObject toJSON();
+    QJsonObject toJson();
 private:
     float latitude;
     float longitude;

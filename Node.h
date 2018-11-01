@@ -13,6 +13,7 @@
 #include "Location.h"
 #include "dataparser/DataParser.h"
 
+#include <QJsonObject>
 #include <QString>
 #include <QSet>
 
@@ -29,6 +30,7 @@ public:
     QString getHostname();
     QString getFakeMac();
     QString getIpAddress(bool subnet201 = false);
+    QString getNodeType();
     
     int getId();
     QSet<Link*> getLinks();
@@ -41,6 +43,9 @@ public:
     bool hasValidLocation();
     
     void fill(DataParser* dp);
+    
+    QJsonObject* getJsonObjectHop();
+    QJsonObject* getJsonObjectMesh();
     
     void setOnline(bool online);
     
