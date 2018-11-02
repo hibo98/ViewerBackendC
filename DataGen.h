@@ -28,6 +28,7 @@ public slots:
 private:
     static DataHolder* dh;
     void processNodes();
+    void collectLinks();
     void stop();
 };
 

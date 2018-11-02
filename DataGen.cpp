@@ -22,8 +22,8 @@ DataGen::DataGen(QObject*parent) : QObject(parent) {
 }
 
 void DataGen::start() {
-    std::cout << "Welcome to ViewerBackend" <<std::endl;
-    std::cout << "Requesting API..." <<std::endl;
+    std::cout << "Welcome to ViewerBackend" << std::endl;
+    std::cout << "Requesting API..." << std::endl;
     QObject::connect(dh, &DataHolder::processedAPI, this, &DataGen::processedAPI);
     DataGen::dh->requestAPI();
 }
@@ -33,11 +33,12 @@ void DataGen::processedAPI(bool error) {
         this->stop();
     } else {
         this->processNodes();
+        this->collectLinks();
     }
 }
 
 void DataGen::processNodes() {
-    std::cout << "Requesting Nodes Sysinfo..." <<std::endl;
+    std::cout << "Requesting Nodes Sysinfo..." << std::endl;
     QList<Node*> values = DataGen::dh->getNodes().values();
     QThreadPool pool;
     for (int i = 0; i < values.size(); i++) {
@@ -46,6 +47,24 @@ void DataGen::processNodes() {
         pool.start(request);
     }
     pool.waitForDone();
+}
+
+void DataGen::collectLinks() {
+    std::cout << "Collecting links..." << std::endl;
+    QList<Node*> values = DataGen::dh->getNodes().values();
+    for (int i = 0; i < values.size(); i++) {
+        Node* node = values.at(i);
+        QList<Link*> links = node->getLinks().values();
+        for (int j = 0; j < links.size(); j++) {
+            Link* link = links.at(j);
+            Link* lnk = DataGen::dh->getLink(link->getSource()->getId(), link->getTarget()->getId());
+            if (lnk == nullptr) {
+                DataGen::dh->addLink(link);
+            } else {
+                lnk->setTargetTq(link->getSourceTq());
+            }
+        }
+    }
 }
 
 DataHolder* DataGen::getDataHolder() {
