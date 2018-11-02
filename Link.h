@@ -38,6 +38,9 @@ public:
     
     static LinkType getLinkTypeByInterface(QString s);
     static LinkType getLinkTypeByType(QString s);
+    
+    static double convertToHopGlass(signed char tq);
+    static double convertToMeshViewer(signed char tq);
 private:
     signed char sourceTq = -1;
     signed char targetTq = -1;

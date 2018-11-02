@@ -8,6 +8,8 @@
 
 #include "Link.h"
 
+#include <cmath>
+
 Link::Link(LinkType type, Node* source, Node* target, signed char sourceTq, signed char targetTq) {
     this->type = type;
     this->sourceTq = sourceTq;
@@ -98,4 +100,12 @@ LinkType Link::getLinkTypeByType(QString s) {
     } else {
         return OTHER;
     }
+}
+
+double Link::convertToHopGlass(signed char tq) {
+    return tq < 1 ? 100000 : (std::round(100 / tq * 1000) / 1000);
+}
+
+double Link::convertToMeshViewer(signed char tq) {
+    return tq == -1 ? 0 : tq / 100;
 }

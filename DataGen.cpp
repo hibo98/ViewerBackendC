@@ -9,6 +9,7 @@
 #include "DataGen.h"
 #include "Node.h"
 #include "NodeSysinfoRequest.h"
+#include "JsonFileGen.h"
 
 #include <iostream>
 #include <QCoreApplication>
@@ -29,12 +30,12 @@ void DataGen::start() {
 }
 
 void DataGen::processedAPI(bool error) {
-    if (error) {
-        this->stop();
-    } else {
+    if (!error) {
         this->processNodes();
         this->collectLinks();
+        this->genJson();
     }
+    this->stop();
 }
 
 void DataGen::processNodes() {
@@ -65,6 +66,13 @@ void DataGen::collectLinks() {
             }
         }
     }
+}
+
+void DataGen::genJson() {
+    std::cout << "Generate JSON files..." << std::endl;
+    JsonFileGen json(DataGen::dh->getNodes().values(), DataGen::dh->getLinks().values());
+    json.genHopGlass();
+    json.genMeshViewer();
 }
 
 DataHolder* DataGen::getDataHolder() {

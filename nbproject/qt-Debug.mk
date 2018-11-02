@@ -52,6 +52,7 @@ OBJECTS_DIR   = build/Debug/LocalCygwin-Windows/
 
 SOURCES       = DataGen.cpp \
 		DataHolder.cpp \
+		JsonFileGen.cpp \
 		JsonRequest.cpp \
 		Link.cpp \
 		Location.cpp \
@@ -67,6 +68,7 @@ SOURCES       = DataGen.cpp \
 		moc_NodeSysinfoRequest.cpp
 OBJECTS       = build/Debug/LocalCygwin-Windows/DataGen.o \
 		build/Debug/LocalCygwin-Windows/DataHolder.o \
+		build/Debug/LocalCygwin-Windows/JsonFileGen.o \
 		build/Debug/LocalCygwin-Windows/JsonRequest.o \
 		build/Debug/LocalCygwin-Windows/Link.o \
 		build/Debug/LocalCygwin-Windows/Location.o \
@@ -167,6 +169,7 @@ DIST          = /usr/lib/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt5/mkspecs/features/lex.prf \
 		nbproject/nbproject/qt-Debug.pro DataGen.h \
 		DataHolder.h \
+		JsonFileGen.h \
 		JsonRequest.h \
 		Link.h \
 		Location.h \
@@ -177,6 +180,7 @@ DIST          = /usr/lib/qt5/mkspecs/features/spec_pre.prf \
 		dataparser/DataParserAPI.h \
 		dataparser/DataParserSysinfo.h DataGen.cpp \
 		DataHolder.cpp \
+		JsonFileGen.cpp \
 		JsonRequest.cpp \
 		Link.cpp \
 		Location.cpp \
@@ -385,8 +389,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents DataGen.h DataHolder.h JsonRequest.h Link.h Location.h Node.h NodeSysinfoRequest.h Util.h dataparser/DataParser.h dataparser/DataParserAPI.h dataparser/DataParserSysinfo.h $(DISTDIR)/
-	$(COPY_FILE) --parents DataGen.cpp DataHolder.cpp JsonRequest.cpp Link.cpp Location.cpp Node.cpp NodeSysinfoRequest.cpp Util.cpp dataparser/DataParser.cpp dataparser/DataParserAPI.cpp dataparser/DataParserSysinfo.cpp main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents DataGen.h DataHolder.h JsonFileGen.h JsonRequest.h Link.h Location.h Node.h NodeSysinfoRequest.h Util.h dataparser/DataParser.h dataparser/DataParserAPI.h dataparser/DataParserSysinfo.h $(DISTDIR)/
+	$(COPY_FILE) --parents DataGen.cpp DataHolder.cpp JsonFileGen.cpp JsonRequest.cpp Link.cpp Location.cpp Node.cpp NodeSysinfoRequest.cpp Util.cpp dataparser/DataParser.cpp dataparser/DataParserAPI.cpp dataparser/DataParserSysinfo.cpp main.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -474,7 +478,8 @@ build/Debug/LocalCygwin-Windows/DataGen.o: DataGen.cpp DataGen.h \
 		Location.h \
 		dataparser/DataParser.h \
 		NodeSysinfoRequest.h \
-		JsonRequest.h
+		JsonRequest.h \
+		JsonFileGen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/DataGen.o DataGen.cpp
 
 build/Debug/LocalCygwin-Windows/DataHolder.o: DataHolder.cpp DataHolder.h \
@@ -485,6 +490,14 @@ build/Debug/LocalCygwin-Windows/DataHolder.o: DataHolder.cpp DataHolder.h \
 		JsonRequest.h \
 		dataparser/DataParserAPI.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/DataHolder.o DataHolder.cpp
+
+build/Debug/LocalCygwin-Windows/JsonFileGen.o: JsonFileGen.cpp JsonFileGen.h \
+		Link.h \
+		Node.h \
+		Location.h \
+		dataparser/DataParser.h \
+		Util.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/JsonFileGen.o JsonFileGen.cpp
 
 build/Debug/LocalCygwin-Windows/JsonRequest.o: JsonRequest.cpp JsonRequest.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/Debug/LocalCygwin-Windows/JsonRequest.o JsonRequest.cpp

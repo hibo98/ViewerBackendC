@@ -29,6 +29,7 @@ private:
     static DataHolder* dh;
     void processNodes();
     void collectLinks();
+    void genJson();
     void stop();
 };
 

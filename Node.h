@@ -44,8 +44,8 @@ public:
     
     void fill(DataParser* dp);
     
-    QJsonObject* getJsonObjectHop();
-    QJsonObject* getJsonObjectMesh();
+    QJsonObject getJsonObjectHop();
+    QJsonObject getJsonObjectMesh();
     
     void setOnline(bool online);
     
