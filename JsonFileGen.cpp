@@ -10,6 +10,8 @@
 #include "Node.h"
 #include "Util.h"
 
+#include <iostream>
+
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -93,6 +95,10 @@ void JsonFileGen::genHopGlass() {
     jsonObject.insert("version", QJsonValue(2));
     QJsonDocument nodesDoc(jsonObject);
     QFile nodes("nodes.json");
+    if (!nodes.open(QIODevice::WriteOnly)) {
+        std::cerr << "Couldn't open file:" << "nodes.json" << std::endl;
+        return;
+    }
     nodes.write(nodesDoc.toJson(QJsonDocument::Compact));
     //graph.json
     jsonObject = QJsonObject();
@@ -106,6 +112,10 @@ void JsonFileGen::genHopGlass() {
     jsonObject.insert("batadv", QJsonValue(batadv));
     QJsonDocument graphDoc(jsonObject);
     QFile graph("graph.json");
+    if (!graph.open(QIODevice::WriteOnly)) {
+        std::cerr << "Couldn't open file:" << "graph.json" << std::endl;
+        return;
+    }
     graph.write(graphDoc.toJson(QJsonDocument::Compact));
 }
 
@@ -116,5 +126,9 @@ void JsonFileGen::genMeshViewer() {
     jsonObject.insert("links", QJsonValue(this->meshViewerLinks));
     QJsonDocument doc(jsonObject);
     QFile file("meshviewer.json");
+    if (!file.open(QIODevice::WriteOnly)) {
+        std::cerr << "Couldn't open file:" << "meshviewer.json" << std::endl;
+        return;
+    }
     file.write(doc.toJson(QJsonDocument::Compact));
 }
