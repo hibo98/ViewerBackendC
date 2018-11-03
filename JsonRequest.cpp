@@ -28,7 +28,7 @@ void JsonRequest::run() {
     this->request.setUrl(this->url);
     this->reply = this->manager->get(this->request);
     QObject::connect(this->reply, &QNetworkReply::finished, this, &JsonRequest::finished);
-    QObject::connect(this->reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), this, &JsonRequest::replyError);
+    QObject::connect(this->reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(replyError(QNetworkReply::NetworkError)));
 }
 
 void JsonRequest::finished() {
