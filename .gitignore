@@ -45,3 +45,5 @@ CMakeLists.txt.user*
 # Netbeans
 nbproject/private
 
+# Generated files
+/*.json
