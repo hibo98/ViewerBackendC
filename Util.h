@@ -15,6 +15,7 @@ class Util {
 public:
     static QString getTimeString(long millisecounds);
     static long getCurrentTimestamp();
+    const static long DAYS_30 = 1000L * 60L * 60L * 24L * 30L;
 private:
 
 };

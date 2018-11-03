@@ -70,7 +70,7 @@ bool Node::isValid() {
 }
 
 bool Node::isDisplayed() {
-    return this->display && this->isValid();
+    return this->isValid() && (this->lastseen > Util::getCurrentTimestamp() - Util::DAYS_30);
 }
 
 bool Node::isOnline() {
@@ -109,7 +109,7 @@ void Node::fill(DataParser* dp) {
         this->gatewayIp = json.value("gatewayIp").toString();
     }
     if (json.contains("lastseen")) {
-        this->firstseen = json.value("firstseen").toString().toLong();
+        this->lastseen = json.value("lastseen").toString().toLong();
     }
     if (json.contains("lat") && json.contains("lon")) {
         this->location = new Location(json.value("lat").toDouble(), json.value("lon").toDouble());
@@ -141,6 +141,7 @@ void Node::fill(DataParser* dp) {
     if (dp->hasLinkSet()) {
         dp->getLinkSet(&this->links);
     }
+    this->valid = true;
 }
 
 QJsonObject Node::getJsonObjectHop() {

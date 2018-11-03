@@ -72,7 +72,6 @@ private:
     Location* location;
     QString gatewayIp;
     bool valid = false;
-    bool display;
     bool autoupdate;
 };
 
