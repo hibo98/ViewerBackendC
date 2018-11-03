@@ -16,6 +16,7 @@
 
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
+#include <QNetworkReply>
 
 class JsonRequest : public QObject, public QRunnable {
     Q_OBJECT
@@ -23,13 +24,19 @@ class JsonRequest : public QObject, public QRunnable {
 public:
     explicit JsonRequest(QUrl url);
     virtual ~JsonRequest();
-    
+
     void run();
+
 private:
     QUrl url;
     QNetworkAccessManager* manager;
     QNetworkRequest request;
-    
+    QNetworkReply* reply;
+
+private slots:
+    void finished();
+    void replyError(QNetworkReply::NetworkError e);
+
 signals:
     void result(QJsonDocument doc);
     void error(QString eStr);

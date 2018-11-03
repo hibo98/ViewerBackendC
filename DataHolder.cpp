@@ -71,7 +71,7 @@ void DataHolder::processAPI(QJsonDocument doc) {
     }
     QJsonArray array = doc.array();
     for (int i = 0; i < array.size(); i++) {
-        QJsonValueRef value = array[i];
+        QJsonValue value = array.at(i);
         if (value.isObject()) {
             QJsonObject o = value.toObject();
             int id = o.value("id").toString("-1").toInt();

@@ -28,11 +28,17 @@ public:
 public slots:
     void success(QJsonDocument doc);
     void error(QString eStr);
+    void timeout();
+
+signals:
+    void finished();
 
 private:
     Node* n;
     JsonRequest* request;
     int retryCount = 3;
+
+    void runRequest();
 };
 
 #endif /* NODESYSINFOREQUEST_H */
