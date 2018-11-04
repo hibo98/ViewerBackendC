@@ -42,6 +42,9 @@ void DataGen::processNodes() {
     std::cout << "Requesting Nodes Sysinfo..." << std::endl;
     QList<Node*> values = DataGen::dh->getNodes().values();
     QThreadPool pool;
+    if (pool.maxThreadCount() < 10) {
+        pool.setMaxThreadCount(10);
+    }
     for (int i = 0; i < values.size(); i++) {
         Node* node = values.at(i);
         NodeSysinfoRequest* request = new NodeSysinfoRequest(node);
