@@ -76,6 +76,7 @@ DataHolder* DataGen::getDataHolder() {
 }
 
 void DataGen::stop() {
+    delete DataGen::dh;
     QCoreApplication::instance()->quit();
 }
 

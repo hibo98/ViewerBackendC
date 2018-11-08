@@ -13,11 +13,35 @@
 #include <iostream>
 #include <QJsonArray>
 #include <QThreadPool>
+#include <QList>
 
 DataHolder::DataHolder() : QObject(nullptr){
 }
 
 DataHolder::~DataHolder() {
+    QList<QMap<int,Link*>*> links1 = this->links.values();
+    for (int i = 0; i < links1.size(); i++) {
+        QMap<int,Link*>* links2 = links1.at(i);
+        QList<Link*> values = links2->values();
+        int min = -1;
+        for (int j = 0; j < values.size(); j++) {
+            Link* link = values.at(j);
+            min = std::min(link->getSource()->getId(), link->getTarget()->getId());
+            int max = std::max(link->getSource()->getId(), link->getTarget()->getId());
+            links2->remove(max);
+            delete link;
+        }
+        if (min != -1) {
+            this->links.remove(min);
+        }
+        delete links2;
+    }
+    QList<Node*> n = this->nodes.values();
+    for (int i = 0; i < n.size(); i++) {
+        Node* node = n.at(i);
+        this->nodes.remove(node->getId());
+        delete node;
+    }
 }
 
 Node* DataHolder::getNode(int id) {

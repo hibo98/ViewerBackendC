@@ -142,6 +142,7 @@ void Node::fill(DataParser* dp) {
         dp->getLinkSet(&this->links);
     }
     this->valid = true;
+    delete dp;
 }
 
 QJsonObject Node::getJsonObjectHop() {

@@ -11,16 +11,12 @@
 #include <QString>
 #include <QTimer>
 
-#include <QNetworkReply>
-
 JsonRequest::JsonRequest(QUrl url) : QObject(nullptr) {
     this->url = url;
 }
 
 JsonRequest::~JsonRequest() {
-    if (this->manager != nullptr) {
-        delete this->manager;
-    }
+    delete this->manager;
 }
 
 void JsonRequest::run() {

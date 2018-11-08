@@ -8,6 +8,9 @@
 
 #include "DataParser.h"
 
+DataParser::~DataParser() {
+}
+
 QJsonObject DataParser::getData() {
 }
 
