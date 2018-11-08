@@ -66,11 +66,12 @@ void DataParserSysinfo::getLinkSet(QSet<Link*>* links) {
         QJsonArray lnks = rt.value("route").toObject().value("link").toArray();
         for (int i = 0; i < lnks.size(); i++) {
             QJsonObject l = lnks[i].toObject();
-            QStringList split = l.value("target").toString().split("\\.");
-            int targetId = (split[2].toInt() * 255) + (split[3].toInt() - 1);
-            LinkType linkType = Link::getLinkTypeByInterface(l.value("interface").toString());
-            Node* target = DataGen::getDataHolder()->getNode(targetId);
-            links->insert(new Link(linkType, target, node));
+            int targetId = Node::convertIpToId(l.value("target").toString());
+            if (targetId != -1) {
+                LinkType linkType = Link::getLinkTypeByInterface(l.value("interface").toString());
+                Node* target = DataGen::getDataHolder()->getNode(targetId);
+                links->insert(new Link(linkType, target, node));
+            }
         }
     }
     if (bmxd.contains("links")) {
