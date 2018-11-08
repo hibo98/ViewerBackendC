@@ -11,9 +11,7 @@
 #include "dataparser/DataParserSysinfo.h"
 
 #include <iostream>
-#include <QEventLoop>
 #include <QJsonObject>
-#include <QTimer>
 
 NodeSysinfoRequest::NodeSysinfoRequest(Node* n) : QObject(nullptr) {
     this->n = n;
@@ -28,14 +26,6 @@ NodeSysinfoRequest::~NodeSysinfoRequest() {
 
 void NodeSysinfoRequest::run() {
     this->runRequest();
-
-    QTimer timer;
-    timer.setSingleShot(true);
-    QEventLoop loop;
-    connect(this, &NodeSysinfoRequest::finished, &loop, &QEventLoop::quit);
-    connect(&timer, &QTimer::timeout, this, &NodeSysinfoRequest::timeout);
-    timer.start(7500);
-    loop.exec();
 }
 
 void NodeSysinfoRequest::success(QJsonDocument doc) {
@@ -47,7 +37,7 @@ void NodeSysinfoRequest::success(QJsonDocument doc) {
     } else {
         std::cerr << "Node " << this->n->getId() << ": Not well formed JSON!" << std::endl;
     }
-    emit finished();
+    emit finished(this);
 }
 
 void NodeSysinfoRequest::error(QString eStr) {
@@ -63,12 +53,6 @@ void NodeSysinfoRequest::runRequest() {
         this->retryCount--;
         this->request->run();
     } else {
-        emit finished();
+        emit finished(this);
     }
 }
-
-void NodeSysinfoRequest::timeout() {
-    this->n->setOnline(false);
-    emit finished();
-}
-

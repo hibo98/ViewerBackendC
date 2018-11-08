@@ -11,14 +11,13 @@
 
 #include <QJsonDocument>
 #include <QObject>
-#include <QRunnable>
 #include <QUrl>
 
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 
-class JsonRequest : public QObject, public QRunnable {
+class JsonRequest : public QObject {
     Q_OBJECT
 
 public:
@@ -36,6 +35,7 @@ private:
 private slots:
     void finished();
     void replyError(QNetworkReply::NetworkError e);
+    void timeout();
 
 signals:
     void result(QJsonDocument doc);

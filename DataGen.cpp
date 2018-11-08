@@ -10,6 +10,7 @@
 #include "Node.h"
 #include "NodeSysinfoRequest.h"
 #include "JsonFileGen.h"
+#include "NodeProcessor.h"
 
 #include <iostream>
 #include <QCoreApplication>
@@ -41,16 +42,8 @@ void DataGen::processedAPI(bool error) {
 void DataGen::processNodes() {
     std::cout << "Requesting Nodes Sysinfo..." << std::endl;
     QList<Node*> values = DataGen::dh->getNodes().values();
-    QThreadPool pool;
-    if (pool.maxThreadCount() < 10) {
-        pool.setMaxThreadCount(10);
-    }
-    for (int i = 0; i < values.size(); i++) {
-        Node* node = values.at(i);
-        NodeSysinfoRequest* request = new NodeSysinfoRequest(node);
-        pool.start(request);
-    }
-    pool.waitForDone();
+    NodeProcessor proc(values);
+    proc.process();
 }
 
 void DataGen::collectLinks() {

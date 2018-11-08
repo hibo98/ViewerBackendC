@@ -13,6 +13,7 @@
 #include "Node.h"
 
 #include <QJsonDocument>
+#include <QRunnable>
 #include <QObject>
 #include <QString>
 
@@ -28,10 +29,9 @@ public:
 public slots:
     void success(QJsonDocument doc);
     void error(QString eStr);
-    void timeout();
 
 signals:
-    void finished();
+    void finished(NodeSysinfoRequest* n);
 
 private:
     Node* n;

@@ -7,7 +7,6 @@
  */
 
 #include "DataHolder.h"
-#include "JsonRequest.h"
 #include "dataparser/DataParserAPI.h"
 
 #include <algorithm>
@@ -57,13 +56,14 @@ QMap<int, QMap<int, Link*>*> DataHolder::getLinks() {
 }
 
 void DataHolder::requestAPI() {
-    JsonRequest* request = new JsonRequest(QUrl("http://api.freifunk-dresden.de/freifunk-niklas-hopglass.json"));
-    connect(request, &JsonRequest::result, this, &DataHolder::processAPI);
-    connect(request, &JsonRequest::error, this, &DataHolder::processAPIError);
-    request->run();
+    this->apiRequest = new JsonRequest(QUrl("http://api.freifunk-dresden.de/freifunk-niklas-hopglass.json"));
+    connect(this->apiRequest, &JsonRequest::result, this, &DataHolder::processAPI);
+    connect(this->apiRequest, &JsonRequest::error, this, &DataHolder::processAPIError);
+    this->apiRequest->run();
 }
 
 void DataHolder::processAPI(QJsonDocument doc) {
+    delete this->apiRequest;
     if (!doc.isArray()) {
         std::cerr << "No Array!" << std::endl;
         emit processedAPI(true);
@@ -84,6 +84,7 @@ void DataHolder::processAPI(QJsonDocument doc) {
 }
 
 void DataHolder::processAPIError(QString eStr) {
+    delete this->apiRequest;
     std::cerr << eStr.toStdString() << std::endl;
     emit processedAPI(true);
 }
