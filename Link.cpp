@@ -1,11 +1,3 @@
-
-/* 
- * File:   Link.cpp
- * Author: NMerkelt
- * 
- * Created on 13. Oktober 2018, 15:06
- */
-
 #include "Link.h"
 
 #include <cmath>

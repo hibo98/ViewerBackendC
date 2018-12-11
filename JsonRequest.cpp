@@ -1,11 +1,3 @@
-
-/* 
- * File:   JsonRequest.cpp
- * Author: NMerkelt
- * 
- * Created on 18. Oktober 2018, 17:25
- */
-
 #include "JsonRequest.h"
 
 #include <QString>

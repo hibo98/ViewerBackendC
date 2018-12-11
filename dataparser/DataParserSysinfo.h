@@ -1,16 +1,7 @@
-
-/* 
- * File:   DataParserSysinfo.h
- * Author: NMerkelt
- *
- * Created on 19. Oktober 2018, 19:46
- */
-
 #ifndef DATAPARSERSYSINFO_H
 #define DATAPARSERSYSINFO_H
 
 #include "DataParser.h"
-
 #include "Node.h"
 
 #include <QJsonObject>
@@ -20,7 +11,7 @@ class DataParserSysinfo : public DataParser {
 public:
     DataParserSysinfo(QJsonObject json, int version);
     DataParserSysinfo(const DataParserSysinfo& orig);
-    virtual ~DataParserSysinfo();
+    virtual ~DataParserSysinfo() override;
     
     QJsonObject getData() override;
     bool hasLinkSet() override;
@@ -40,7 +31,7 @@ private:
     QString getFirmwareBase();
     QString getFirmwareVersion();
     QString getGatewayIp();
-    long getLastseen();
+    long long getLastseen();
     double getLoadAvg();
     double getLongitude();
     double getLatitude();

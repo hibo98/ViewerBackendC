@@ -1,16 +1,8 @@
-
-/* 
- * File:   Location.cpp
- * Author: NMerkelt
- * 
- * Created on 17. Oktober 2018, 13:09
- */
-
 #include "Location.h"
 
 #include <QJsonValue>
 
-Location::Location(float latitude, float longitude) {
+Location::Location(double latitude, double longitude) {
     this->latitude = latitude;
     this->longitude = longitude;
 }
@@ -21,11 +13,11 @@ Location::Location(const Location& orig) : Location(orig.latitude, orig.longitud
 Location::~Location() {
 }
 
-float Location::getLatitude() {
+double Location::getLatitude() {
     return this->latitude;
 }
 
-float Location::getLongitude() {
+double Location::getLongitude() {
     return this->longitude;
 }
 

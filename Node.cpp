@@ -1,13 +1,7 @@
-
-/* 
- * File:   Node.cpp
- * Author: NMerkelt
- * 
- * Created on 17. Oktober 2018, 13:11
- */
-
 #include "Node.h"
 #include "Util.h"
+#include "DataGen.h"
+#include "StatsSQL.h"
 
 #include <QJsonArray>
 #include <QJsonValue>
@@ -49,7 +43,6 @@ QString Node::getNodeType() {
         case STANDARD:
         default:
             return QString("standard");
-            break;
     }
 }
 
@@ -88,7 +81,7 @@ void Node::fill(DataParser* dp) {
         this->autoupdate = json.value("autoupdate").toBool();
     }
     if (json.contains("clients")) {
-        this->clients = (signed char) json.value("clients").toInt();
+        this->clients = static_cast<signed char>(json.value("clients").toInt());
     }
     if (json.contains("community")) {
         this->community = json.value("community").toString();
@@ -127,7 +120,7 @@ void Node::fill(DataParser* dp) {
         this->name = json.value("name").toString();
     }
     if (json.contains("role")) {
-        this->type = (NodeType) json.value("role").toInt();
+        this->type = static_cast<NodeType>(json.value("role").toInt());
     }
     if (json.contains("uptime")) {
         this->uptime = json.value("uptime").toDouble();
@@ -219,7 +212,7 @@ QJsonObject Node::getJsonObjectMesh() {
     if (this->online) {
         node.insert("loadavg", QJsonValue(this->avgLoad));
         node.insert("memory_usage", QJsonValue(this->memoryUsage));
-        long date = Util::getCurrentTimestamp() - (this->uptime * 1000);
+        long long date = Util::getCurrentTimestamp() - (static_cast<long long>(this->uptime) * 1000);
         node.insert("uptime", QJsonValue(Util::getTimeString(date)));
         node.insert("nproc", QJsonValue(1)); //TODO: Correct processor count
     }
@@ -253,6 +246,46 @@ QJsonObject Node::getJsonObjectMesh() {
     node.insert("vpn", QJsonValue(this->gateway)); //TODO: Correct value
     node.insert("mac", QJsonValue(this->getFakeMac()));
     return node;
+}
+
+void Node::updateDatabase()
+{
+    if (!this->hasValidLocation()) {
+        sql::PreparedStatement* ps = DataGen::getDatabase()->prepareStatement("INSERT INTO nodes SET id = ? ON DUPLICATE KEY UPDATE id = id");
+        ps->setInt(1, this->id);
+        ps->execute();
+        delete ps;
+    } else {
+        sql::PreparedStatement* ps = DataGen::getDatabase()->prepareStatement("INSERT INTO nodes SET id = ?, latitude = ?, longitude = ? ON DUPLICATE KEY UPDATE latitude = ?, longitude = ?");
+        ps->setInt(1, this->id);
+        ps->setDouble(2, this->location->getLatitude());
+        ps->setDouble(3, this->location->getLongitude());
+        ps->setDouble(4, this->location->getLatitude());
+        ps->setDouble(5, this->location->getLongitude());
+        ps->execute();
+        delete ps;
+    }
+    sql::PreparedStatement* ps = DataGen::getDatabase()->prepareStatement("UPDATE nodes SET community = ?, role = ?, model = ?, firmwareVersion = ?, firmwareBase = ?, firstseen = ?, lastseen = ?, online = ?, autoupdate = ?, gateway = ?, name = ?, email = ? WHERE id = ?");
+    ps->setString(1, sql::SQLString(this->community.toStdString()));
+    ps->setString(2, sql::SQLString(this->getNodeType().toStdString()));
+    ps->setString(3, sql::SQLString(this->model.toStdString()));
+    ps->setString(4, sql::SQLString(this->firmwareVersion.toStdString()));
+    ps->setString(5, sql::SQLString(this->firmwareBase.toStdString()));
+    ps->setInt(6, static_cast<int>(this->firstseen / 1000));
+    ps->setInt(7, static_cast<int>(this->lastseen / 1000));
+    ps->setBoolean(8, this->online);
+    ps->setBoolean(9, this->autoupdate);
+    ps->setBoolean(10, this->gateway);
+    ps->setString(11, sql::SQLString(this->name.toStdString()));
+    ps->setString(12, sql::SQLString(this->email.toStdString()));
+    ps->setInt(13, this->id);
+    ps->execute();
+    //Statistics
+    if (this->isOnline() && (this->id >= 1000 && this->id < 51000)) {
+        StatsSQL::addClientStat(this, this->clients);
+        StatsSQL::addLoadStat(this, static_cast<float>(this->avgLoad));
+        StatsSQL::addMemoryStat(this, this->memoryUsage);
+    }
 }
 
 void Node::setOnline(bool online) {

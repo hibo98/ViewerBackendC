@@ -1,21 +1,15 @@
-
-/* 
- * File:   Util.cpp
- * Author: NMerkelt
- * 
- * Created on 1. November 2018, 09:59
- */
-
 #include "Util.h"
 
 #include <QDateTime>
 
-QString Util::getTimeString(long millisec) {
+const long long Util::DAYS_30 = 1000LL * 60LL * 60LL * 24LL * 30LL;
+
+QString Util::getTimeString(long long millisec) {
     QDateTime time = QDateTime::fromMSecsSinceEpoch(millisec);
     return time.toString(Qt::ISODate);
 }
 
-long Util::getCurrentTimestamp() {
+long long Util::getCurrentTimestamp() {
     return QDateTime::currentMSecsSinceEpoch();
 }
 

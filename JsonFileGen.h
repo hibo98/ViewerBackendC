@@ -1,11 +1,3 @@
-
-/* 
- * File:   JsonFileGen.h
- * Author: NMerkelt
- *
- * Created on 1. November 2018, 13:21
- */
-
 #ifndef JSONFILEGEN_H
 #define JSONFILEGEN_H
 

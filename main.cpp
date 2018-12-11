@@ -1,11 +1,3 @@
-
-/*
- * File:   main.cpp
- * Author: NMerkelt
- *
- * Created on 13. Oktober 2018, 13:56
- */
-
 #include "DataGen.h"
 
 #include <QCoreApplication>

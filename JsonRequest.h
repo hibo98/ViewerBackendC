@@ -1,18 +1,9 @@
-
-/* 
- * File:   JsonRequest.h
- * Author: NMerkelt
- *
- * Created on 18. Oktober 2018, 17:25
- */
-
 #ifndef JSONREQUEST_H
 #define JSONREQUEST_H
 
 #include <QJsonDocument>
 #include <QObject>
 #include <QUrl>
-
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>

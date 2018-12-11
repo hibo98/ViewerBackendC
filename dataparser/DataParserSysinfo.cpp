@@ -1,11 +1,3 @@
-
-/* 
- * File:   DataParserSysinfo.cpp
- * Author: NMerkelt
- * 
- * Created on 19. Oktober 2018, 19:46
- */
-
 #include "DataParserSysinfo.h"
 #include "../DataGen.h"
 #include "../Util.h"
@@ -79,7 +71,7 @@ void DataParserSysinfo::getLinkSet(QSet<Link*>* links) {
         for (int i = 0; i < lnks.size(); i++) {
             QJsonObject l = lnks[i].toObject();
             Node* target = DataGen::getDataHolder()->getNode(l.value("node").toInt());
-            signed char tq = (signed char) l.value("tq").toString().toShort();
+            signed char tq = static_cast<signed char>(l.value("tq").toString().toShort());
             if (this->version == 10) {
                 QList<Link*> linkmap = links->values();
                 for (int i = 0; i < linkmap.size(); i++) {
@@ -147,7 +139,7 @@ QString DataParserSysinfo::getGatewayIp() {
     return this->data.value("bmxd").toObject().value("gateways").toObject().value("selected").toString();
 }
 
-long DataParserSysinfo::getLastseen() {
+long long DataParserSysinfo::getLastseen() {
     return Util::getCurrentTimestamp();
 }
 

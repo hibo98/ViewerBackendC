@@ -1,23 +1,17 @@
-
-/* 
- * File:   Main2.cpp
- * Author: NMerkelt
- * 
- * Created on 13. Oktober 2018, 14:46
- */
-
 #include "DataGen.h"
 #include "Node.h"
-#include "NodeSysinfoRequest.h"
 #include "JsonFileGen.h"
-#include "NodeProcessor.h"
+#include "processor/nodeprocessor.h"
 
 #include <iostream>
 #include <QCoreApplication>
 #include <QList>
 #include <QThreadPool>
 
+#include <dataparser/DataParserDB.h>
+
 DataHolder* DataGen::dh = nullptr;
+MySQL* DataGen::db = nullptr;
 
 DataGen::DataGen(QObject*parent) : QObject(parent) {
     DataGen::dh = new DataHolder();
@@ -25,16 +19,25 @@ DataGen::DataGen(QObject*parent) : QObject(parent) {
 
 void DataGen::start() {
     std::cout << "Welcome to ViewerBackend" << std::endl;
-    std::cout << "Requesting API..." << std::endl;
-    QObject::connect(dh, &DataHolder::processedAPI, this, &DataGen::processedAPI);
-    DataGen::dh->requestAPI();
+    std::cout << "Connecting to Database..." << std::endl;
+    DataGen::db = new MySQL();
+    if (!DataGen::db->hasConnection()) {
+        std::cerr << "Database Connection couldn't be established!" << std::endl;
+        this->stop();
+    } else {
+        std::cout << "Requesting API..." << std::endl;
+        QObject::connect(dh, &DataHolder::processedAPI, this, &DataGen::processedAPI);
+        DataGen::dh->requestAPI();
+    }
 }
 
 void DataGen::processedAPI(bool error) {
     if (!error) {
         this->processNodes();
+        this->fillOfflineNodes();
         this->collectLinks();
         this->genJson();
+        this->saveToDatabase();
     }
     this->stop();
 }
@@ -44,6 +47,28 @@ void DataGen::processNodes() {
     QList<Node*> values = DataGen::dh->getNodes().values();
     NodeProcessor proc(values);
     proc.process();
+}
+
+void DataGen::fillOfflineNodes()
+{
+    std::cout << "Fill offline nodes from database..." << std::endl;
+    QString ids;
+    QList<Node*> nodes = DataGen::dh->getNodes().values();
+    for (int i = 0; i < nodes.size(); i++) {
+        Node* node = nodes.at(i);
+        if (!node->isOnline()) {
+            QString s = QString(std::to_string(node->getId()).c_str());
+            ids = ids.append(s).append(",");
+        }
+    }
+    ids.resize(ids.length() - 1);
+    if (ids.isEmpty()) {
+        return;
+    }
+    sql::ResultSet* rs = DataGen::db->executeQuery("SELECT * FROM nodes WHERE id IN (" + ids.toStdString() + ")");
+    while (rs->next()) {
+        DataGen::dh->getNode(rs->getInt("id"))->fill(new DataParserDB(rs));
+    }
 }
 
 void DataGen::collectLinks() {
@@ -71,8 +96,19 @@ void DataGen::genJson() {
     json.genMeshViewer();
 }
 
+void DataGen::saveToDatabase()
+{
+    std::cout << "Saving to database..." << std::endl;
+    //TODO: Saving to Database
+}
+
 DataHolder* DataGen::getDataHolder() {
     return DataGen::dh;
+}
+
+MySQL* DataGen::getDatabase()
+{
+    return DataGen::db;
 }
 
 void DataGen::stop() {

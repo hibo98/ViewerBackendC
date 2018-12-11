@@ -1,11 +1,3 @@
-
-/* 
- * File:   DataParser.h
- * Author: NMerkelt
- *
- * Created on 18. Oktober 2018, 22:24
- */
-
 #ifndef DATAPARSER_H
 #define DATAPARSER_H
 
@@ -18,9 +10,9 @@
 class DataParser {
 public:
     virtual ~DataParser();
-    virtual QJsonObject getData();
-    virtual bool hasLinkSet();
-    virtual void getLinkSet(QSet<Link*>*);
+    virtual QJsonObject getData() = 0;
+    virtual bool hasLinkSet() = 0;
+    virtual void getLinkSet(QSet<Link*>*) = 0;
 };
 
 #endif /* DATAPARSER_H */

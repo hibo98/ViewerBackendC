@@ -1,11 +1,3 @@
-
-/* 
- * File:   Node.h
- * Author: NMerkelt
- *
- * Created on 17. Oktober 2018, 13:11
- */
-
 #ifndef NODE_H
 #define NODE_H
 
@@ -17,11 +9,13 @@
 #include <QString>
 #include <QSet>
 
-enum NodeType {
+enum NodeType
+{
     STANDARD
 };
 
-class Node {
+class Node
+{
 public:
     Node(int id);
     Node(const Node& orig);
@@ -43,6 +37,7 @@ public:
     bool hasValidLocation();
     
     void fill(DataParser* dp);
+    void updateDatabase();
     
     QJsonObject getJsonObjectHop();
     QJsonObject getJsonObjectMesh();
@@ -67,8 +62,8 @@ private:
     signed char clients;
     double avgLoad;
     bool gateway;
-    long lastseen = -1;
-    long firstseen = -1;
+    long long lastseen = -1;
+    long long firstseen = -1;
     Location* location;
     QString gatewayIp;
     bool valid = false;

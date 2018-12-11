@@ -1,11 +1,3 @@
-
-/* 
- * File:   DataHolder.h
- * Author: NMerkelt
- *
- * Created on 17. Oktober 2018, 15:45
- */
-
 #ifndef DATAHOLDER_H
 #define DATAHOLDER_H
 

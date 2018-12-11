@@ -1,11 +1,3 @@
-
-/* 
- * File:   DataParserAPI.h
- * Author: NMerkelt
- *
- * Created on 18. Oktober 2018, 22:58
- */
-
 #ifndef DATAPARSERAPI_H
 #define DATAPARSERAPI_H
 
@@ -18,7 +10,7 @@ class DataParserAPI : public DataParser {
 public:
     DataParserAPI(QJsonObject json);
     DataParserAPI(const DataParserAPI& orig);
-    virtual ~DataParserAPI();
+    virtual ~DataParserAPI() override;
     
     QJsonObject getData() override;
     bool hasLinkSet() override;
@@ -29,9 +21,9 @@ private:
     bool getAutoUpdate();
     int getClients();
     QString getFirmwareVersion();
-    long getFirstseen();
+    long long getFirstseen();
     QString getGatewayIp();
-    long getLastseen();
+    long long getLastseen();
     double getLongitude();
     double getLatitude();
     QString getName();

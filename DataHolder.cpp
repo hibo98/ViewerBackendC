@@ -1,11 +1,3 @@
-
-/* 
- * File:   DataHolder.cpp
- * Author: NMerkelt
- * 
- * Created on 17. Oktober 2018, 15:45
- */
-
 #include "DataHolder.h"
 #include "dataparser/DataParserAPI.h"
 

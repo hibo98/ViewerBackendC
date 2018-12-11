@@ -1,17 +1,8 @@
-
-/* 
- * File:   JsonFileGen.cpp
- * Author: NMerkelt
- * 
- * Created on 1. November 2018, 13:21
- */
-
 #include "JsonFileGen.h"
 #include "Node.h"
 #include "Util.h"
 
 #include <iostream>
-
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>

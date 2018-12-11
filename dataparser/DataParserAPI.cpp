@@ -1,11 +1,3 @@
-
-/* 
- * File:   DataParserAPI.cpp
- * Author: NMerkelt
- * 
- * Created on 18. Oktober 2018, 22:58
- */
-
 #include "DataParserAPI.h"
 
 #include <QJsonValue>
@@ -57,16 +49,16 @@ QString DataParserAPI::getFirmwareVersion() {
     return this->json.value("firmware").toString();
 }
 
-long DataParserAPI::getFirstseen() {
-    return this->json.value("status").toObject().value("firstseen").toString().toLong() * 1000;
+long long DataParserAPI::getFirstseen() {
+    return this->json.value("status").toObject().value("firstseen").toString().toLongLong() * 1000;
 }
 
 QString DataParserAPI::getGatewayIp() {
     return this->json.value("status").toObject().value("selected_gateway").toString();
 }
 
-long DataParserAPI::getLastseen() {
-    return this->json.value("status").toObject().value("lastseen").toString().toLong() * 1000;
+long long DataParserAPI::getLastseen() {
+    return this->json.value("status").toObject().value("lastseen").toString().toLongLong() * 1000;
 }
 
 double DataParserAPI::getLatitude() {

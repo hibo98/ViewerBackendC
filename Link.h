@@ -1,11 +1,3 @@
-
-/* 
- * File:   Link.h
- * Author: NMerkelt
- *
- * Created on 13. Oktober 2018, 15:06
- */
-
 #ifndef LINK_H
 #define LINK_H
 
