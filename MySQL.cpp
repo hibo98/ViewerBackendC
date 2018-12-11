@@ -4,28 +4,28 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <jdbc/mysql_driver.h>
-#include <jdbc/mysql_connection.h>
-#include <jdbc/cppconn/statement.h>
+#include <QSqlQuery>
 
 MySQL::MySQL() {
+    QString d = QString("Available drivers: ");
+    QStringList drivers = QSqlDatabase::drivers();
+    for (int i = 0; i < drivers.size(); i++) {
+        d += drivers.at(i) + " ";
+    }
+    std::cout << d.toStdString() << std::endl;
+
     if (this->loadCfg()) {
-        if (!this->openConnection()) {
-            std::cerr << "No connection to database!" << std::endl;
-        }
+        this->openConnection();
     } else {
         this->createCfg();
         if (this->loadCfg()) {
-            if (!this->openConnection()) {
-                std::cerr << "No connection to database!" << std::endl;
-            }
+            this->openConnection();
         }
     }
 }
 
 MySQL::~MySQL() {
-    this->closeConnection();
-    delete this->connection;
+    this->connection.close();
 }
 
 bool MySQL::loadCfg() {
@@ -45,10 +45,10 @@ bool MySQL::loadCfg() {
         std::cerr << "Failure in config file format, createing config file..." << std::endl;
         return false;
     }
-    this->host = sql::SQLString(cfg.value("host").toString().toStdString());
-    this->username = sql::SQLString(cfg.value("username").toString().toStdString());
-    this->password = sql::SQLString(cfg.value("password").toString().toStdString());
-    this->database = sql::SQLString(cfg.value("database").toString().toStdString());
+    this->host = cfg.value("host").toString();
+    this->username = cfg.value("username").toString();
+    this->password = cfg.value("password").toString();
+    this->database = cfg.value("database").toString();
     return true;
 }
 
@@ -68,39 +68,35 @@ void MySQL::createCfg() {
 }
 
 bool MySQL::openConnection() {
-    sql::mysql::MySQL_Driver* driver = sql::mysql::get_mysql_driver_instance();
-    if (this->connection == nullptr) {
-        this->connection = driver->connect(this->host, this->username, this->password);
-        this->connection->setSchema(this->database);
-        return this->hasConnection();
-    } else {
-        if (this->connection->isClosed()) {
-            delete this->connection;
-            this->connection = nullptr;
-            return this->openConnection();
-        } else {
-            return this->connection->reconnect();
-        }
+    if (!this->connection.isValid()) {
+        this->connection = QSqlDatabase::addDatabase("QMYSQL");
+        connection.setHostName(this->host);
+        connection.setDatabaseName(this->database);
+        connection.setUserName(this->username);
+        connection.setPassword(this->password);
     }
+    return this->connection.open();
 }
 
 bool MySQL::hasConnection() {
-    return this->connection != nullptr && this->connection->isValid();
+    return this->connection.isOpen();
 }
 
 void MySQL::closeConnection() {
-    this->connection->close();
+    this->connection.close();
 }
 
-bool MySQL::execute(sql::SQLString sql) {
-    return this->connection->createStatement()->execute(sql);
+bool MySQL::execute(QString query) {
+    return this->connection.exec().exec(query);
 }
 
-sql::ResultSet* MySQL::executeQuery(sql::SQLString sql) {
-    return this->connection->createStatement()->executeQuery(sql);
+QSqlQuery MySQL::executeQuery(QString query) {
+    return this->connection.exec(query);
 }
 
-sql::PreparedStatement* MySQL::prepareStatement(sql::SQLString sql) {
-    return this->connection->prepareStatement(sql);
+QSqlQuery MySQL::prepareStatement(QString query) {
+    QSqlQuery q = this->connection.exec();
+    q.prepare(query);
+    return q;
 }
 

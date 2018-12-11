@@ -36,16 +36,15 @@ void StatsSQL::processStats()
             query += "(?,?),";
         }
         query.resize(query.length() - 1);
-        sql::PreparedStatement* ps = DataGen::getDatabase()->prepareStatement(sql::SQLString(query.toStdString()));
-        unsigned int i = 1;
+        QSqlQuery ps = DataGen::getDatabase()->prepareStatement(query);
         QMap<Node*, short>::key_value_iterator it = StatsSQL::clients.keyValueBegin();
         QMap<Node*, short>::key_value_iterator end = StatsSQL::clients.keyValueEnd();
         while (it != end) {
             std::pair<Node*, short> p = *it;
-            ps->setInt(i++, p.first->getId());
-            ps->setDouble(i++, p.second);
+            ps.addBindValue(p.first->getId());
+            ps.addBindValue(p.second);
         }
-        ps->execute();
+        ps.exec();
     }
     if (!StatsSQL::load.isEmpty()) {
         QString query = "INSERT INTO statsLoad (node, value) VALUES ";
@@ -53,16 +52,15 @@ void StatsSQL::processStats()
             query += "(?,?),";
         }
         query.resize(query.length() - 1);
-        sql::PreparedStatement* ps = DataGen::getDatabase()->prepareStatement(sql::SQLString(query.toStdString()));
-        unsigned int i = 1;
+        QSqlQuery ps = DataGen::getDatabase()->prepareStatement(query);
         QMap<Node*, float>::key_value_iterator it = StatsSQL::load.keyValueBegin();
         QMap<Node*, float>::key_value_iterator end = StatsSQL::load.keyValueEnd();
         while (it != end) {
             std::pair<Node*, float> p = *it;
-            ps->setInt(i++, p.first->getId());
-            ps->setDouble(i++, static_cast<double>(p.second));
+            ps.addBindValue(p.first->getId());
+            ps.addBindValue(static_cast<double>(p.second));
         }
-        ps->execute();
+        ps.exec();
     }
     if (!StatsSQL::memory.isEmpty()) {
         QString query = "INSERT INTO statsMemory (node, value) VALUES ";
@@ -70,16 +68,15 @@ void StatsSQL::processStats()
             query += "(?,?),";
         }
         query.resize(query.length() - 1);
-        sql::PreparedStatement* ps = DataGen::getDatabase()->prepareStatement(sql::SQLString(query.toStdString()));
-        unsigned int i = 1;
+        QSqlQuery ps = DataGen::getDatabase()->prepareStatement(query);
         QMap<Node*, double>::key_value_iterator it = StatsSQL::memory.keyValueBegin();
         QMap<Node*, double>::key_value_iterator end = StatsSQL::memory.keyValueEnd();
         while (it != end) {
             std::pair<Node*, double> p = *it;
-            ps->setInt(i++, p.first->getId());
-            ps->setDouble(i++, p.second);
+            ps.addBindValue(p.first->getId());
+            ps.addBindValue(p.second);
         }
-        ps->execute();
+        ps.exec();
     }
     if (!StatsSQL::generalStats.isEmpty()) {
         QString query = "INSERT INTO statsGeneral (type, value) VALUES ";
@@ -88,15 +85,14 @@ void StatsSQL::processStats()
         }
         query.resize(query.length() - 1);
 
-        sql::PreparedStatement* ps = DataGen::getDatabase()->prepareStatement(sql::SQLString(query.toStdString()));
-        unsigned int i = 1;
+        QSqlQuery ps = DataGen::getDatabase()->prepareStatement(query);
         QMap<GeneralStatType, double>::key_value_iterator it = StatsSQL::generalStats.keyValueBegin();
         QMap<GeneralStatType, double>::key_value_iterator end = StatsSQL::generalStats.keyValueEnd();
         while (it != end) {
             std::pair<GeneralStatType, double> p = *it;
-            ps->setInt(i++, p.first);
-            ps->setDouble(i++, p.second);
+            ps.addBindValue(p.first);
+            ps.addBindValue(p.second);
         }
-        ps->execute();
+        ps.exec();
     }
 }

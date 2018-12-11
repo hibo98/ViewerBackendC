@@ -251,35 +251,33 @@ QJsonObject Node::getJsonObjectMesh() {
 void Node::updateDatabase()
 {
     if (!this->hasValidLocation()) {
-        sql::PreparedStatement* ps = DataGen::getDatabase()->prepareStatement("INSERT INTO nodes SET id = ? ON DUPLICATE KEY UPDATE id = id");
-        ps->setInt(1, this->id);
-        ps->execute();
-        delete ps;
+        QSqlQuery ps = DataGen::getDatabase()->prepareStatement("INSERT INTO nodes SET id = ? ON DUPLICATE KEY UPDATE id = id");
+        ps.addBindValue(this->id);
+        ps.exec();
     } else {
-        sql::PreparedStatement* ps = DataGen::getDatabase()->prepareStatement("INSERT INTO nodes SET id = ?, latitude = ?, longitude = ? ON DUPLICATE KEY UPDATE latitude = ?, longitude = ?");
-        ps->setInt(1, this->id);
-        ps->setDouble(2, this->location->getLatitude());
-        ps->setDouble(3, this->location->getLongitude());
-        ps->setDouble(4, this->location->getLatitude());
-        ps->setDouble(5, this->location->getLongitude());
-        ps->execute();
-        delete ps;
+        QSqlQuery ps = DataGen::getDatabase()->prepareStatement("INSERT INTO nodes SET id = ?, latitude = ?, longitude = ? ON DUPLICATE KEY UPDATE latitude = ?, longitude = ?");
+        ps.addBindValue(this->id);
+        ps.addBindValue(this->location->getLatitude());
+        ps.addBindValue(this->location->getLongitude());
+        ps.addBindValue(this->location->getLatitude());
+        ps.addBindValue(this->location->getLongitude());
+        ps.exec();
     }
-    sql::PreparedStatement* ps = DataGen::getDatabase()->prepareStatement("UPDATE nodes SET community = ?, role = ?, model = ?, firmwareVersion = ?, firmwareBase = ?, firstseen = ?, lastseen = ?, online = ?, autoupdate = ?, gateway = ?, name = ?, email = ? WHERE id = ?");
-    ps->setString(1, sql::SQLString(this->community.toStdString()));
-    ps->setString(2, sql::SQLString(this->getNodeType().toStdString()));
-    ps->setString(3, sql::SQLString(this->model.toStdString()));
-    ps->setString(4, sql::SQLString(this->firmwareVersion.toStdString()));
-    ps->setString(5, sql::SQLString(this->firmwareBase.toStdString()));
-    ps->setInt(6, static_cast<int>(this->firstseen / 1000));
-    ps->setInt(7, static_cast<int>(this->lastseen / 1000));
-    ps->setBoolean(8, this->online);
-    ps->setBoolean(9, this->autoupdate);
-    ps->setBoolean(10, this->gateway);
-    ps->setString(11, sql::SQLString(this->name.toStdString()));
-    ps->setString(12, sql::SQLString(this->email.toStdString()));
-    ps->setInt(13, this->id);
-    ps->execute();
+    QSqlQuery ps = DataGen::getDatabase()->prepareStatement("UPDATE nodes SET community = ?, role = ?, model = ?, firmwareVersion = ?, firmwareBase = ?, firstseen = ?, lastseen = ?, online = ?, autoupdate = ?, gateway = ?, name = ?, email = ? WHERE id = ?");
+    ps.addBindValue(this->community);
+    ps.addBindValue(this->getNodeType());
+    ps.addBindValue(this->model);
+    ps.addBindValue(this->firmwareVersion);
+    ps.addBindValue(this->firmwareBase);
+    ps.addBindValue(static_cast<int>(this->firstseen / 1000));
+    ps.addBindValue(static_cast<int>(this->lastseen / 1000));
+    ps.addBindValue(this->online);
+    ps.addBindValue(this->autoupdate);
+    ps.addBindValue(this->gateway);
+    ps.addBindValue(this->name);
+    ps.addBindValue(this->email);
+    ps.addBindValue(this->id);
+    ps.exec();
     //Statistics
     if (this->isOnline() && (this->id >= 1000 && this->id < 51000)) {
         StatsSQL::addClientStat(this, this->clients);

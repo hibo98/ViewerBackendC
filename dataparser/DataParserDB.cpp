@@ -1,6 +1,8 @@
 #include "DataParserDB.h"
 
-DataParserDB::DataParserDB(sql::ResultSet* result)
+#include <QVariant>
+
+DataParserDB::DataParserDB(QSqlQuery result)
 {
     this->result = result;
 }
@@ -11,7 +13,6 @@ DataParserDB::DataParserDB(const DataParserDB& orig) : DataParserDB(orig.result)
 
 DataParserDB::~DataParserDB()
 {
-
 }
 
 QJsonObject DataParserDB::getData()
@@ -47,65 +48,65 @@ void DataParserDB::getLinkSet(QSet<Link*>*)
 
 bool DataParserDB::getAutoUpdate()
 {
-    bool autoupdate = this->result->getBoolean("autoupdate");
-    return this->result->wasNull() ? false : autoupdate;
+    QVariant autoupdate = this->result.value("autoupdate");
+    return autoupdate.isNull() ? false : autoupdate.toBool();
 }
 
 QString DataParserDB::getCommunity()
 {
-    return QString(this->result->getString("community").c_str());
+    return this->result.value("community").toString();
 }
 
 QString DataParserDB::getEMail()
 {
-    return QString(this->result->getString("email").c_str());
+    return this->result.value("email").toString();
 }
 
 QString DataParserDB::getFirmwareBase()
 {
-    return QString(this->result->getString("firmwareBase").c_str());
+    return this->result.value("firmwareBase").toString();
 }
 
 QString DataParserDB::getFirmwareVersion()
 {
-    return QString(this->result->getString("firmwareVersion").c_str());
+    return this->result.value("firmwareVersion").toString();
 }
 
 long long DataParserDB::getFirstseen()
 {
-    return this->result->getInt64("firstseen") * 1000LL;
+    return this->result.value("firstseen").toLongLong() * 1000LL;
 }
 
 long long DataParserDB::getLastseen()
 {
-    return this->result->getInt64("lastseen") * 1000LL;
+    return this->result.value("lastseen").toLongLong() * 1000LL;
 }
 
 double DataParserDB::getLongitude()
 {
-    double lon = static_cast<double>(this->result->getDouble("longitude"));
-    return this->result->wasNull() ? 0 : lon;
+    QVariant lon = this->result.value("longitude");
+    return lon.isNull() ? 0 : lon.toDouble();
 }
 
 double DataParserDB::getLatitude()
 {
-    double lat = static_cast<double>(this->result->getDouble("latitude"));
-    return this->result->wasNull() ? 0 : lat;
+    QVariant lat = this->result.value("latitude");
+    return lat.isNull() ? 0 : lat.toDouble();
 }
 
 QString DataParserDB::getModel()
 {
-    return QString(this->result->getString("model").c_str());
+    return this->result.value("model").toString();
 }
 
 QString DataParserDB::getName()
 {
-    return QString(this->result->getString("name").c_str());
+    return this->result.value("name").toString();
 }
 
 NodeType DataParserDB::getRole()
 {
-    QString s = QString(this->result->getString("role").c_str());
+    QString s = this->result.value("role").toString();
     if (s == "node") {
         return STANDARD;
     } else {
@@ -116,7 +117,7 @@ NodeType DataParserDB::getRole()
 
 bool DataParserDB::isGateway()
 {
-    return this->result->getBoolean("gateway");
+    return this->result.value("gateway").toBool();
 }
 
 bool DataParserDB::isOnline()

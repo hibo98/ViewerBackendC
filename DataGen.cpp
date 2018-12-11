@@ -65,9 +65,9 @@ void DataGen::fillOfflineNodes()
     if (ids.isEmpty()) {
         return;
     }
-    sql::ResultSet* rs = DataGen::db->executeQuery("SELECT * FROM nodes WHERE id IN (" + ids.toStdString() + ")");
-    while (rs->next()) {
-        DataGen::dh->getNode(rs->getInt("id"))->fill(new DataParserDB(rs));
+    QSqlQuery rs = DataGen::db->executeQuery("SELECT * FROM nodes WHERE id IN (" + ids + ")");
+    while (rs.next()) {
+        DataGen::dh->getNode(rs.value("id").toInt())->fill(new DataParserDB(rs));
     }
 }
 

@@ -1,4 +1,4 @@
-QT += network
+QT += network sql
 QT -= gui
 
 CONFIG += c++11 console
@@ -55,9 +55,3 @@ HEADERS += \
     processor/nodeprocessor.h \
     processor/databaseprocessor.h \
     processor/nodedatabaseprocessor.h
-
-
-unix:!macx: LIBS += -L$$PWD/lib/mysql-connector-c++/lib64/ -lmysqlcppconn
-
-INCLUDEPATH += $$PWD/lib/mysql-connector-c++/include
-DEPENDPATH += $$PWD/lib/mysql-connector-c++/include

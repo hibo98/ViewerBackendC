@@ -7,12 +7,12 @@
 #include <QJsonObject>
 #include <QSet>
 #include <QString>
-#include <jdbc/cppconn/resultset.h>
+#include <QSqlQuery>
 
 class DataParserDB : public DataParser
 {
 public:
-    DataParserDB(sql::ResultSet* result);
+    DataParserDB(QSqlQuery result);
     DataParserDB(const DataParserDB& orig);
     virtual ~DataParserDB() override;
 
@@ -21,7 +21,7 @@ public:
     void getLinkSet(QSet<Link*>*) override;
 
 private:
-    sql::ResultSet* result;
+    QSqlQuery result;
     QJsonObject r;
     bool getAutoUpdate();
     QString getCommunity();
