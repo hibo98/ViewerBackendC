@@ -57,7 +57,7 @@ HEADERS += \
     processor/nodedatabaseprocessor.h
 
 
-unix:!macx: LIBS += -L$$PWD/../../../../home/nmerkelt/Downloads/mysql-connector-c++-8.0.13-linux-glibc2.12-x86-64bit/lib64/ -lmysqlcppconn
+unix:!macx: LIBS += -L$$PWD/lib/mysql-connector-c++/lib64/ -lmysqlcppconn
 
-INCLUDEPATH += $$PWD/../../../../home/nmerkelt/Downloads/mysql-connector-c++-8.0.13-linux-glibc2.12-x86-64bit/include
-DEPENDPATH += $$PWD/../../../../home/nmerkelt/Downloads/mysql-connector-c++-8.0.13-linux-glibc2.12-x86-64bit/include
+INCLUDEPATH += $$PWD/lib/mysql-connector-c++/include
+DEPENDPATH += $$PWD/lib/mysql-connector-c++/include
