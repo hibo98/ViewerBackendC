@@ -37,12 +37,9 @@ void StatsSQL::processStats()
         }
         query.resize(query.length() - 1);
         QSqlQuery ps = DataGen::getDatabase()->prepareStatement(query);
-        QMap<Node*, short>::key_value_iterator it = StatsSQL::clients.keyValueBegin();
-        QMap<Node*, short>::key_value_iterator end = StatsSQL::clients.keyValueEnd();
-        while (it != end) {
-            std::pair<Node*, short> p = *it;
-            ps.addBindValue(p.first->getId());
-            ps.addBindValue(p.second);
+        for (Node* p : StatsSQL::clients.keys()) {
+            ps.addBindValue(p->getId());
+            ps.addBindValue(StatsSQL::clients.value(p));
         }
         ps.exec();
     }
@@ -53,12 +50,9 @@ void StatsSQL::processStats()
         }
         query.resize(query.length() - 1);
         QSqlQuery ps = DataGen::getDatabase()->prepareStatement(query);
-        QMap<Node*, float>::key_value_iterator it = StatsSQL::load.keyValueBegin();
-        QMap<Node*, float>::key_value_iterator end = StatsSQL::load.keyValueEnd();
-        while (it != end) {
-            std::pair<Node*, float> p = *it;
-            ps.addBindValue(p.first->getId());
-            ps.addBindValue(static_cast<double>(p.second));
+        for (Node* p : StatsSQL::load.keys()) {
+            ps.addBindValue(p->getId());
+            ps.addBindValue(static_cast<double>(StatsSQL::load.value(p)));
         }
         ps.exec();
     }
@@ -69,12 +63,9 @@ void StatsSQL::processStats()
         }
         query.resize(query.length() - 1);
         QSqlQuery ps = DataGen::getDatabase()->prepareStatement(query);
-        QMap<Node*, double>::key_value_iterator it = StatsSQL::memory.keyValueBegin();
-        QMap<Node*, double>::key_value_iterator end = StatsSQL::memory.keyValueEnd();
-        while (it != end) {
-            std::pair<Node*, double> p = *it;
-            ps.addBindValue(p.first->getId());
-            ps.addBindValue(p.second);
+        for (Node* p : StatsSQL::memory.keys()) {
+            ps.addBindValue(p->getId());
+            ps.addBindValue(StatsSQL::memory.value(p));
         }
         ps.exec();
     }
@@ -84,14 +75,10 @@ void StatsSQL::processStats()
             query += "(?,?),";
         }
         query.resize(query.length() - 1);
-
         QSqlQuery ps = DataGen::getDatabase()->prepareStatement(query);
-        QMap<GeneralStatType, double>::key_value_iterator it = StatsSQL::generalStats.keyValueBegin();
-        QMap<GeneralStatType, double>::key_value_iterator end = StatsSQL::generalStats.keyValueEnd();
-        while (it != end) {
-            std::pair<GeneralStatType, double> p = *it;
-            ps.addBindValue(p.first);
-            ps.addBindValue(p.second);
+        for (GeneralStatType p : StatsSQL::generalStats.keys()) {
+            ps.addBindValue(p);
+            ps.addBindValue(StatsSQL::generalStats.value(p));
         }
         ps.exec();
     }
