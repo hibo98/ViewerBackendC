@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QSqlQuery>
+#include <QSqlError>
 
 MySQL::MySQL() {
     if (this->loadCfg()) {
@@ -74,6 +75,11 @@ bool MySQL::openConnection() {
     return this->connection.open();
 }
 
+bool MySQL::reconnect() {
+    this->connection.close();
+    return this->connection.open();
+}
+
 bool MySQL::hasConnection() {
     return this->connection.isOpen();
 }
@@ -83,10 +89,16 @@ void MySQL::closeConnection() {
 }
 
 bool MySQL::execute(QString query) {
+    if (!this->hasConnection()) {
+        this->reconnect();
+    }
     return this->connection.exec().exec(query);
 }
 
 QSqlQuery MySQL::executeQuery(QString query) {
+    if (!this->hasConnection()) {
+        this->reconnect();
+    }
     return this->connection.exec(query);
 }
 
@@ -96,3 +108,13 @@ QSqlQuery MySQL::prepareStatement(QString query) {
     return q;
 }
 
+bool MySQL::execPS(QSqlQuery ps) {
+    if (!this->hasConnection()) {
+        this->reconnect();
+    }
+    bool exec = ps.exec();
+    if (!exec) {
+        std::cerr << ps.lastError().text().toStdString() << std::endl;
+    }
+    return exec;
+}

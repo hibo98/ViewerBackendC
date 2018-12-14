@@ -16,11 +16,13 @@ public:
     bool execute(QString query);
     QSqlQuery executeQuery(QString query);
     QSqlQuery prepareStatement(QString query);
+    bool execPS(QSqlQuery ps);
 private:
     void createCfg();
 
     bool loadCfg();
     bool openConnection();
+    bool reconnect();
     
     QSqlDatabase connection;
     QString host;
