@@ -24,8 +24,7 @@ void JsonRequest::run() {
 }
 
 void JsonRequest::finished() {
-    QNetworkReply::NetworkError e = reply->error();
-    if (e == QNetworkReply::NoError) {
+    if (!reply->error()) {
         QString answer = reply->readAll();
         QJsonDocument doc = QJsonDocument::fromJson(answer.toUtf8());
         if (!doc.isNull() && !doc.isEmpty()) {
