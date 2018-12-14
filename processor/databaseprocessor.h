@@ -1,5 +1,5 @@
-#ifndef NODEPROCESSOR_H
-#define NODEPROCESSOR_H
+#ifndef DATABASEROCESSOR_H
+#define DATABASEROCESSOR_H
 
 #include "nodedatabaseprocessor.h"
 #include "../Node.h"
@@ -31,4 +31,4 @@ private:
    QList<NodeDatabaseProcessor*> processing;
 };
 
-#endif // NODEPROCESSOR_H
+#endif // DATABASEROCESSOR_H

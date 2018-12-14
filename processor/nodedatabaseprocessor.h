@@ -1,5 +1,5 @@
-#ifndef NODESYSINFOPROCESSOR_H
-#define NODESYSINFOPROCESSOR_H
+#ifndef NODEDATABASEPROCESSOR_H
+#define NODEDATABASEPROCESSOR_H
 
 #include "../JsonRequest.h"
 #include "../Node.h"
@@ -30,4 +30,4 @@ private:
     Node* element;
 };
 
-#endif // NODESYSINFOPROCESSOR_H
+#endif // NODEDATABASEPROCESSOR_H
