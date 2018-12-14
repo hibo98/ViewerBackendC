@@ -36,7 +36,7 @@ void NodeSysinfoProcessor::success(QJsonDocument doc)
 
 void NodeSysinfoProcessor::error(QString eStr)
 {
-    if (this->retryCount == 0) {
+    if (this->retryCount == 0 && (eStr != "Host unreachable" && eStr != "Unknown error")) {
         std::cerr << "Node " << this->element->getId() << ": " << eStr.toStdString() << std::endl;
     }
     this->element->setOnline(false);
