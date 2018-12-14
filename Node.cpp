@@ -3,9 +3,11 @@
 #include "DataGen.h"
 #include "StatsSQL.h"
 
+#include <iostream>
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QStringList>
+#include <QSqlError>
 
 Node::Node(int id) {
     this->id = id;
@@ -253,7 +255,9 @@ void Node::updateDatabase()
     if (!this->hasValidLocation()) {
         QSqlQuery ps = DataGen::getDatabase()->prepareStatement("INSERT INTO nodes SET id = ? ON DUPLICATE KEY UPDATE id = id");
         ps.addBindValue(this->id);
-        ps.exec();
+        if (!ps.exec()) {
+            std::cerr << ps.lastError().text().toStdString() << std::endl;
+        }
     } else {
         QSqlQuery ps = DataGen::getDatabase()->prepareStatement("INSERT INTO nodes SET id = ?, latitude = ?, longitude = ? ON DUPLICATE KEY UPDATE latitude = ?, longitude = ?");
         ps.addBindValue(this->id);
@@ -261,7 +265,9 @@ void Node::updateDatabase()
         ps.addBindValue(this->location->getLongitude());
         ps.addBindValue(this->location->getLatitude());
         ps.addBindValue(this->location->getLongitude());
-        ps.exec();
+        if (!ps.exec()) {
+            std::cerr << ps.lastError().text().toStdString() << std::endl;
+        }
     }
     QSqlQuery ps = DataGen::getDatabase()->prepareStatement("UPDATE nodes SET community = ?, role = ?, model = ?, firmwareVersion = ?, firmwareBase = ?, firstseen = ?, lastseen = ?, online = ?, autoupdate = ?, gateway = ?, name = ?, email = ? WHERE id = ?");
     ps.addBindValue(this->community);
@@ -277,7 +283,9 @@ void Node::updateDatabase()
     ps.addBindValue(this->name);
     ps.addBindValue(this->email);
     ps.addBindValue(this->id);
-    ps.exec();
+    if (!ps.exec()) {
+        std::cerr << ps.lastError().text().toStdString() << std::endl;
+    }
     //Statistics
     if (this->isOnline() && (this->id >= 1000 && this->id < 51000)) {
         StatsSQL::addClientStat(this, this->clients);

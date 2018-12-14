@@ -1,7 +1,9 @@
 #include "StatsSQL.h"
 #include "DataGen.h"
 
+#include <iostream>
 #include <QMap>
+#include <QSqlError>
 
 QMap<GeneralStatType, double> StatsSQL::generalStats = QMap<GeneralStatType, double>();
 QMap<Node*, short> StatsSQL::clients = QMap<Node*, short>();
@@ -41,7 +43,9 @@ void StatsSQL::processStats()
             ps.addBindValue(p->getId());
             ps.addBindValue(StatsSQL::clients.value(p));
         }
-        ps.exec();
+        if (!ps.exec()) {
+            std::cerr << ps.lastError().text().toStdString() << std::endl;
+        }
     }
     if (!StatsSQL::load.isEmpty()) {
         QString query = "INSERT INTO statsLoad (node, value) VALUES ";
@@ -54,7 +58,9 @@ void StatsSQL::processStats()
             ps.addBindValue(p->getId());
             ps.addBindValue(static_cast<double>(StatsSQL::load.value(p)));
         }
-        ps.exec();
+        if (!ps.exec()) {
+            std::cerr << ps.lastError().text().toStdString() << std::endl;
+        }
     }
     if (!StatsSQL::memory.isEmpty()) {
         QString query = "INSERT INTO statsMemory (node, value) VALUES ";
@@ -67,7 +73,9 @@ void StatsSQL::processStats()
             ps.addBindValue(p->getId());
             ps.addBindValue(StatsSQL::memory.value(p));
         }
-        ps.exec();
+        if (!ps.exec()) {
+            std::cerr << ps.lastError().text().toStdString() << std::endl;
+        }
     }
     if (!StatsSQL::generalStats.isEmpty()) {
         QString query = "INSERT INTO statsGeneral (type, value) VALUES ";
@@ -80,6 +88,8 @@ void StatsSQL::processStats()
             ps.addBindValue(p);
             ps.addBindValue(StatsSQL::generalStats.value(p));
         }
-        ps.exec();
+        if (!ps.exec()) {
+            std::cerr << ps.lastError().text().toStdString() << std::endl;
+        }
     }
 }
