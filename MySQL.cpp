@@ -7,13 +7,6 @@
 #include <QSqlQuery>
 
 MySQL::MySQL() {
-    QString d = QString("Available drivers: ");
-    QStringList drivers = QSqlDatabase::drivers();
-    for (int i = 0; i < drivers.size(); i++) {
-        d += drivers.at(i) + " ";
-    }
-    std::cout << d.toStdString() << std::endl;
-
     if (this->loadCfg()) {
         this->openConnection();
     } else {
@@ -42,10 +35,11 @@ bool MySQL::loadCfg() {
     QJsonDocument configDoc(QJsonDocument::fromJson(saveData));
     QJsonObject cfg = configDoc.object();
     if (!(cfg.contains("host") && cfg.contains("username") && cfg.contains("password") && cfg.contains("database"))) {
-        std::cerr << "Failure in config file format, createing config file..." << std::endl;
+        std::cerr << "Failure in config file format, (re)createing config file..." << std::endl;
         return false;
     }
     this->host = cfg.value("host").toString();
+    this->port = cfg.contains("port") ? static_cast<short>(cfg.value("port").toInt()) : 3306;
     this->username = cfg.value("username").toString();
     this->password = cfg.value("password").toString();
     this->database = cfg.value("database").toString();
@@ -54,7 +48,8 @@ bool MySQL::loadCfg() {
 
 void MySQL::createCfg() {
     QJsonObject jsonObject;
-    jsonObject.insert("host", QJsonValue(QString("tcp://127.0.0.1:3306")));
+    jsonObject.insert("host", QJsonValue(QString("127.0.0.1")));
+    jsonObject.insert("port", QJsonValue(3306));
     jsonObject.insert("username", QJsonValue(QString("username")));
     jsonObject.insert("password", QJsonValue(QString("password")));
     jsonObject.insert("database", QJsonValue(QString("database")));
@@ -71,6 +66,7 @@ bool MySQL::openConnection() {
     if (!this->connection.isValid()) {
         this->connection = QSqlDatabase::addDatabase("QMYSQL");
         connection.setHostName(this->host);
+        connection.setPort(this->port);
         connection.setDatabaseName(this->database);
         connection.setUserName(this->username);
         connection.setPassword(this->password);

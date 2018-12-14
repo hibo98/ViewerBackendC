@@ -24,6 +24,7 @@ private:
     
     QSqlDatabase connection;
     QString host;
+    short port;
     QString username;
     QString password;
     QString database;
