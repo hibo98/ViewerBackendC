@@ -9,7 +9,6 @@ JsonRequest::JsonRequest(QUrl url) : QObject(nullptr) {
 
 JsonRequest::~JsonRequest() {
     delete this->manager;
-    delete this->reply;
 }
 
 void JsonRequest::run() {
@@ -25,7 +24,8 @@ void JsonRequest::run() {
 }
 
 void JsonRequest::finished() {
-    if (!reply->error()) {
+    QNetworkReply::NetworkError e = reply->error();
+    if (e == QNetworkReply::NoError) {
         QString answer = reply->readAll();
         QJsonDocument doc = QJsonDocument::fromJson(answer.toUtf8());
         if (!doc.isNull() && !doc.isEmpty()) {
