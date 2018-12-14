@@ -1,14 +1,16 @@
 #include "DataGen.h"
 #include "Node.h"
 #include "JsonFileGen.h"
+#include "StatsSQL.h"
+#include "dataparser/DataParserDB.h"
 #include "processor/nodeprocessor.h"
+#include "processor/databaseprocessor.h"
 
 #include <iostream>
 #include <QCoreApplication>
 #include <QList>
 #include <QThreadPool>
 
-#include <dataparser/DataParserDB.h>
 
 DataHolder* DataGen::dh = nullptr;
 MySQL* DataGen::db = nullptr;
@@ -99,7 +101,10 @@ void DataGen::genJson() {
 void DataGen::saveToDatabase()
 {
     std::cout << "Saving to database..." << std::endl;
-    //TODO: Saving to Database
+    QList<Node*> values = DataGen::dh->getNodes().values();
+    DatabaseProcessor dbproc(values);
+    dbproc.process();
+    StatsSQL::processStats();
 }
 
 DataHolder* DataGen::getDataHolder() {
