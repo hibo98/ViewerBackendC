@@ -13,16 +13,16 @@ enum LinkType {
 
 class Link {
 public:
-    Link(LinkType type, Node* source, Node* target, signed char sourceTq = -1, signed char targetTq = -1);
+    Link(LinkType type, Node* source, Node* target, short sourceTq = -1, short targetTq = -1);
     Link(const Link& orig);
     virtual ~Link();
 
     Node* getSource();
     Node* getTarget();
-    signed char getSourceTq();
-    void setSourceTq(signed char tq);
-    signed char getTargetTq();
-    void setTargetTq(signed char tq);
+    short getSourceTq();
+    void setSourceTq(short tq);
+    short getTargetTq();
+    void setTargetTq(short tq);
     LinkType getLinkType();
 
     QString getTypeHopglass();
@@ -31,11 +31,11 @@ public:
     static LinkType getLinkTypeByInterface(QString s);
     static LinkType getLinkTypeByType(QString s);
     
-    static double convertToHopGlass(signed char tq);
-    static double convertToMeshViewer(signed char tq);
+    static double convertToHopGlass(short tq);
+    static double convertToMeshViewer(short tq);
 private:
-    signed char sourceTq = -1;
-    signed char targetTq = -1;
+    short sourceTq = -1;
+    short targetTq = -1;
     LinkType type;
     Node* source;
     Node* target;

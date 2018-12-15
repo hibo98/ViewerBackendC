@@ -26,6 +26,7 @@ public slots:
 
 signals:
     void finished(NodeSysinfoProcessor* processor);
+    void finish();
 
 private:
     Node* element;
@@ -33,6 +34,7 @@ private:
     int retryCount = 3;
 
     void runRequest();
+    void done();
 };
 
 #endif // NODESYSINFOPROCESSOR_H

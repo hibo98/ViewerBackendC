@@ -28,7 +28,7 @@ public:
     
     int getId();
     QSet<Link*> getLinks();
-    signed char getClients();
+    short getClients();
     
     bool isValid();
     bool isDisplayed();
@@ -59,12 +59,12 @@ private:
     bool online;
     double uptime;
     double memoryUsage;
-    signed char clients;
+    short clients;
     double avgLoad;
     bool gateway;
     long long lastseen = -1;
     long long firstseen = -1;
-    Location* location;
+    Location* location = nullptr;
     QString gatewayIp;
     bool valid = false;
     bool autoupdate;

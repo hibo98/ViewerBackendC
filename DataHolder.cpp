@@ -92,7 +92,9 @@ void DataHolder::processAPI(QJsonDocument doc) {
             QJsonObject o = value.toObject();
             int id = o.value("id").toString("-1").toInt();
             if (id != -1) {
-                this->getNode(id)->fill(new DataParserAPI(o));
+                DataParserAPI* dp = new DataParserAPI(o);
+                this->getNode(id)->fill(dp);
+                delete dp;
             }
         }
     }

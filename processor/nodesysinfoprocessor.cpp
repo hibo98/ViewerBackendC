@@ -26,12 +26,14 @@ void NodeSysinfoProcessor::success(QJsonDocument doc)
     if (doc.isObject()) {
         QJsonObject json = doc.object();
         if (json.contains("version") && json.contains("data")) {
-            this->element->fill(new DataParserSysinfo(json.value("data").toObject(), json.value("verison").toInt(-1)));
+            DataParserSysinfo* dp = new DataParserSysinfo(json.value("data").toObject(), json.value("verison").toInt(-1));
+            this->element->fill(dp);
+            delete dp;
         }
     } else {
         std::cerr << "Node " << this->element->getId() << ": Not well formed JSON!" << std::endl;
     }
-    emit finished(this);
+    this->done();
 }
 
 void NodeSysinfoProcessor::error(QString eStr)
@@ -48,6 +50,12 @@ void NodeSysinfoProcessor::runRequest() {
         this->retryCount--;
         this->request->run();
     } else {
-        emit finished(this);
+        this->done();
     }
+}
+
+void NodeSysinfoProcessor::done()
+{
+    emit finished(this);
+    emit finish();
 }

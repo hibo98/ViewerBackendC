@@ -25,7 +25,6 @@ void NodeProcessor::process()
 void NodeProcessor::requestFinished(NodeSysinfoProcessor* proc)
 {
     this->processing.removeAll(proc);
-    delete proc;
     if (!this->queue.isEmpty()) {
         this->processNode(this->queue.dequeue());
     } else if (this->processing.isEmpty()) {
@@ -38,5 +37,6 @@ void NodeProcessor::processNode(Node* node)
     NodeSysinfoProcessor* request = new NodeSysinfoProcessor(node);
     this->processing.append(request);
     connect(request, &NodeSysinfoProcessor::finished, this, &NodeProcessor::requestFinished);
+    connect(request, &NodeSysinfoProcessor::finish, request, &NodeSysinfoProcessor::deleteLater);
     request->run();
 }

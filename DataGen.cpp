@@ -12,17 +12,18 @@
 #include <QThreadPool>
 
 
-DataHolder* DataGen::dh = nullptr;
+DataHolder* DataGen::dh = new DataHolder();
 MySQL* DataGen::db = nullptr;
 
 DataGen::DataGen(QObject*parent) : QObject(parent) {
-    DataGen::dh = new DataHolder();
 }
 
 void DataGen::start() {
     std::cout << "Welcome to ViewerBackend" << std::endl;
     std::cout << "Connecting to Database..." << std::endl;
-    DataGen::db = new MySQL();
+    if (DataGen::db == nullptr) {
+        DataGen::db = new MySQL();
+    }
     if (!DataGen::db->hasConnection()) {
         std::cerr << "Database Connection couldn't be established!" << std::endl;
         this->stop();
@@ -69,7 +70,9 @@ void DataGen::fillOfflineNodes()
     }
     QSqlQuery rs = DataGen::db->executeQuery("SELECT * FROM nodes WHERE id IN (" + ids + ")");
     while (rs.next()) {
-        DataGen::dh->getNode(rs.value("id").toInt())->fill(new DataParserDB(rs));
+        DataParserDB* dp = new DataParserDB(rs);
+        DataGen::dh->getNode(rs.value("id").toInt())->fill(dp);
+        delete dp;
     }
 }
 
@@ -117,7 +120,6 @@ MySQL* DataGen::getDatabase()
 }
 
 void DataGen::stop() {
-    delete DataGen::dh;
     QCoreApplication::instance()->quit();
 }
 

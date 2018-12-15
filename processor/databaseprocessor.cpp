@@ -26,7 +26,6 @@ void DatabaseProcessor::process()
 void DatabaseProcessor::requestFinished(NodeDatabaseProcessor* proc)
 {
     this->processing.removeAll(proc);
-    delete proc;
     if (!this->queue.isEmpty()) {
         this->processNode(this->queue.dequeue());
     } else if (this->processing.isEmpty()) {
@@ -39,5 +38,6 @@ void DatabaseProcessor::processNode(Node* node)
     NodeDatabaseProcessor* request = new NodeDatabaseProcessor(node);
     this->processing.append(request);
     connect(request, &NodeDatabaseProcessor::finished, this, &DatabaseProcessor::requestFinished);
+    connect(request, &NodeDatabaseProcessor::done, request, &NodeDatabaseProcessor::deleteLater);
     this->pool.start(request);
 }

@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-Link::Link(LinkType type, Node* source, Node* target, signed char sourceTq, signed char targetTq) {
+Link::Link(LinkType type, Node* source, Node* target, short sourceTq, short targetTq) {
     this->type = type;
     this->sourceTq = sourceTq;
     this->targetTq = targetTq;
@@ -24,19 +24,19 @@ Node* Link::getTarget() {
     return this->target;
 }
 
-signed char Link::getSourceTq() {
+short Link::getSourceTq() {
     return this->sourceTq;
 }
 
-void Link::setSourceTq(signed char tq) {
+void Link::setSourceTq(short tq) {
     this->sourceTq = tq;
 }
 
-signed char Link::getTargetTq() {
+short Link::getTargetTq() {
     return this->targetTq;
 }
 
-void Link::setTargetTq(signed char tq) {
+void Link::setTargetTq(short tq) {
     this->targetTq = tq;
 }
 
@@ -51,7 +51,6 @@ QString Link::getTypeHopglass() {
         case OTHER:
             return "other";
         case WIRELESS:
-        default:
             return "wireless";
     }
 }
@@ -63,7 +62,6 @@ QString Link::getTypeMeshViewer() {
         case OTHER:
             return "other";
         case WIRELESS:
-        default:
             return "wifi";
     }
 }
@@ -94,10 +92,10 @@ LinkType Link::getLinkTypeByType(QString s) {
     }
 }
 
-double Link::convertToHopGlass(signed char tq) {
+double Link::convertToHopGlass(short tq) {
     return tq < 1 ? 100000 : (std::round(100 / tq * 1000) / 1000);
 }
 
-double Link::convertToMeshViewer(signed char tq) {
+double Link::convertToMeshViewer(short tq) {
     return tq == -1 ? 0 : tq / 100;
 }

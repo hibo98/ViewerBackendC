@@ -36,7 +36,7 @@ bool MySQL::loadCfg() {
     QJsonDocument configDoc(QJsonDocument::fromJson(saveData));
     QJsonObject cfg = configDoc.object();
     if (!(cfg.contains("host") && cfg.contains("username") && cfg.contains("password") && cfg.contains("database"))) {
-        std::cerr << "Failure in config file format, (re)createing config file..." << std::endl;
+        std::cerr << "Failure in config file format, (re)creating config file..." << std::endl;
         return false;
     }
     this->host = cfg.value("host").toString();

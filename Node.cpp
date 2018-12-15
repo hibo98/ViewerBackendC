@@ -17,6 +17,7 @@ Node::Node(const Node& orig) : Node(orig.id) {
 }
 
 Node::~Node() {
+    delete this->location;
 }
 
 QString Node::getHostname() {
@@ -43,7 +44,6 @@ QString Node::getIpAddress(bool subnet201) {
 QString Node::getNodeType() {
     switch (this->type) {
         case STANDARD:
-        default:
             return QString("standard");
     }
 }
@@ -56,7 +56,7 @@ QSet<Link*> Node::getLinks() {
     return this->links;
 }
 
-signed char Node::getClients() {
+short Node::getClients() {
     return this->clients;
 }
 
@@ -83,7 +83,7 @@ void Node::fill(DataParser* dp) {
         this->autoupdate = json.value("autoupdate").toBool();
     }
     if (json.contains("clients")) {
-        this->clients = static_cast<signed char>(json.value("clients").toInt());
+        this->clients = json.value("clients").toString().toShort();
     }
     if (json.contains("community")) {
         this->community = json.value("community").toString();
@@ -107,6 +107,9 @@ void Node::fill(DataParser* dp) {
         this->lastseen = json.value("lastseen").toString().toLong();
     }
     if (json.contains("lat") && json.contains("lon")) {
+        if (this->location != nullptr) {
+            delete this->location;
+        }
         this->location = new Location(json.value("lat").toDouble(), json.value("lon").toDouble());
     }
     if (json.contains("load")) {
@@ -122,7 +125,7 @@ void Node::fill(DataParser* dp) {
         this->name = json.value("name").toString();
     }
     if (json.contains("role")) {
-        this->type = static_cast<NodeType>(json.value("role").toInt());
+        this->type = NodeType(json.value("role").toInt());
     }
     if (json.contains("uptime")) {
         this->uptime = json.value("uptime").toDouble();
@@ -137,7 +140,6 @@ void Node::fill(DataParser* dp) {
         dp->getLinkSet(&this->links);
     }
     this->valid = true;
-    delete dp;
 }
 
 QJsonObject Node::getJsonObjectHop() {
@@ -255,7 +257,7 @@ void Node::updateDatabase()
     if (!this->hasValidLocation()) {
         QSqlQuery ps = DataGen::getDatabase()->prepareStatement("INSERT INTO nodes SET id = ? ON DUPLICATE KEY UPDATE id = id");
         ps.addBindValue(this->id);
-        if (!ps.exec()) {
+        if (!DataGen::getDatabase()->execPS(ps)) {
             std::cerr << ps.lastError().text().toStdString() << std::endl;
         }
     } else {
@@ -265,7 +267,7 @@ void Node::updateDatabase()
         ps.addBindValue(this->location->getLongitude());
         ps.addBindValue(this->location->getLatitude());
         ps.addBindValue(this->location->getLongitude());
-        if (!ps.exec()) {
+        if (!DataGen::getDatabase()->execPS(ps)) {
             std::cerr << ps.lastError().text().toStdString() << std::endl;
         }
     }
@@ -283,7 +285,7 @@ void Node::updateDatabase()
     ps.addBindValue(this->name);
     ps.addBindValue(this->email);
     ps.addBindValue(this->id);
-    if (!ps.exec()) {
+    if (!DataGen::getDatabase()->execPS(ps)) {
         std::cerr << ps.lastError().text().toStdString() << std::endl;
     }
     //Statistics

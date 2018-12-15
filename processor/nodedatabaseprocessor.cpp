@@ -20,4 +20,5 @@ void NodeDatabaseProcessor::run()
 void NodeDatabaseProcessor::finish()
 {
     emit finished(this);
+    emit done();
 }

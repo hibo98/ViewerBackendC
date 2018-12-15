@@ -25,6 +25,7 @@ public slots:
 
 signals:
     void finished(NodeDatabaseProcessor* processor);
+    void done();
 
 private:
     Node* element;
