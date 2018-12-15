@@ -13,7 +13,6 @@ NodeSysinfoProcessor::NodeSysinfoProcessor(Node* element) : QObject(nullptr)
 
 NodeSysinfoProcessor::~NodeSysinfoProcessor()
 {
-    delete this->request;
 }
 
 void NodeSysinfoProcessor::run()
@@ -56,6 +55,7 @@ void NodeSysinfoProcessor::runRequest() {
 
 void NodeSysinfoProcessor::done()
 {
+    delete this->request;
     emit finished(this);
     emit finish();
 }
