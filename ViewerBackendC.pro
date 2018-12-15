@@ -32,9 +32,7 @@ SOURCES += \
     dataparser/DataParserDB.cpp \
     StatsSQL.cpp \
     processor/nodesysinfoprocessor.cpp \
-    processor/nodeprocessor.cpp \
-    processor/databaseprocessor.cpp \
-    processor/nodedatabaseprocessor.cpp
+    processor/nodeprocessor.cpp
 
 HEADERS += \
     DataGen.h \
@@ -52,6 +50,4 @@ HEADERS += \
     dataparser/DataParserDB.h \
     StatsSQL.h \
     processor/nodesysinfoprocessor.h \
-    processor/nodeprocessor.h \
-    processor/databaseprocessor.h \
-    processor/nodedatabaseprocessor.h
+    processor/nodeprocessor.h

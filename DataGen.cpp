@@ -4,7 +4,6 @@
 #include "StatsSQL.h"
 #include "dataparser/DataParserDB.h"
 #include "processor/nodeprocessor.h"
-#include "processor/databaseprocessor.h"
 
 #include <iostream>
 #include <QCoreApplication>
@@ -105,8 +104,10 @@ void DataGen::saveToDatabase()
 {
     std::cout << "Saving to database..." << std::endl;
     QList<Node*> values = DataGen::dh->getNodes().values();
-    DatabaseProcessor dbproc(values);
-    dbproc.process();
+    for (int i = 0; i < values.size(); i++) {
+        Node* node = values.at(i);
+        node->updateDatabase();
+    }
     StatsSQL::processStats();
 }
 
