@@ -7,7 +7,6 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QTimer>
 
 class JsonRequest : public QObject {
     Q_OBJECT
@@ -23,7 +22,6 @@ private:
     QNetworkAccessManager* manager;
     QNetworkRequest request;
     QNetworkReply* reply;
-    QTimer* timer;
 
 private slots:
     void finished();

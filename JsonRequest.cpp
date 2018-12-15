@@ -1,6 +1,7 @@
 #include "JsonRequest.h"
 
 #include <QString>
+#include <QTimer>
 
 JsonRequest::JsonRequest(QUrl url) : QObject(nullptr) {
     this->url = url;
@@ -8,19 +9,15 @@ JsonRequest::JsonRequest(QUrl url) : QObject(nullptr) {
 
 JsonRequest::~JsonRequest() {
     delete this->manager;
-    delete this->timer;
 }
 
 void JsonRequest::run() {
-    this->timer = new QTimer();
-    this->timer->setSingleShot(true);
-    connect(this->timer, &QTimer::timeout, this, &JsonRequest::timeout);
     this->manager = new QNetworkAccessManager();
     this->request.setUrl(this->url);
     this->reply = this->manager->get(this->request);
     QObject::connect(this->reply, &QNetworkReply::finished, this, &JsonRequest::finished);
     QObject::connect(this->reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(replyError(QNetworkReply::NetworkError)));
-    this->timer->start(7500);
+    QTimer::singleShot(7500, this, &JsonRequest::timeout);
 }
 
 void JsonRequest::finished() {
