@@ -4,6 +4,7 @@
 #include "StatsSQL.h"
 #include "dataparser/DataParserDB.h"
 #include "processor/nodeprocessor.h"
+#include "database/nodesql.h"
 
 #include <iostream>
 #include <QCoreApplication>
@@ -108,6 +109,7 @@ void DataGen::saveToDatabase()
         Node* node = values.at(i);
         node->updateDatabase();
     }
+    NodeSQL::processNodes();
     StatsSQL::processStats();
 }
 

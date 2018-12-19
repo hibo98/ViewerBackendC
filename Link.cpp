@@ -53,6 +53,7 @@ QString Link::getTypeHopglass() {
         case WIRELESS:
             return "wireless";
     }
+    return "other";
 }
 
 QString Link::getTypeMeshViewer() {
@@ -64,6 +65,7 @@ QString Link::getTypeMeshViewer() {
         case WIRELESS:
             return "wifi";
     }
+    return "other";
 }
 
 LinkType Link::getLinkTypeByInterface(QString s) {

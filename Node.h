@@ -29,10 +29,21 @@ public:
     int getId();
     QSet<Link*> getLinks();
     short getClients();
-    
+    Location* getLocation();
+    QString getCommunity();
+    QString getModel();
+    QString getFirmwareBase();
+    QString getFirmwareVersion();
+    long long getFirstseen();
+    long long getLastseen();
+    QString getName();
+    QString getEMail();
+
     bool isValid();
     bool isDisplayed();
     bool isOnline();
+    bool isAutoupdate();
+    bool isGateway();
     
     bool hasValidLocation();
     

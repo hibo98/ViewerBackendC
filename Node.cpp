@@ -2,6 +2,7 @@
 #include "Util.h"
 #include "DataGen.h"
 #include "StatsSQL.h"
+#include "database/nodesql.h"
 
 #include <iostream>
 #include <QJsonArray>
@@ -46,6 +47,7 @@ QString Node::getNodeType() {
         case STANDARD:
             return QString("standard");
     }
+    return QString("standard");
 }
 
 int Node::getId() {
@@ -60,6 +62,42 @@ short Node::getClients() {
     return this->clients;
 }
 
+Location* Node::getLocation() {
+    return this->location;
+}
+
+QString Node::getCommunity() {
+    return this->community;
+}
+
+QString Node::getModel() {
+    return this->model;
+}
+
+QString Node::getFirmwareBase() {
+    return this->firmwareBase;
+}
+
+QString Node::getFirmwareVersion() {
+    return this->firmwareVersion;
+}
+
+long long Node::getFirstseen() {
+    return this->firstseen;
+}
+
+long long Node::getLastseen() {
+    return this->lastseen;
+}
+
+QString Node::getName() {
+    return this->name;
+}
+
+QString Node::getEMail() {
+    return this->email;
+}
+
 bool Node::isValid() {
     return this->valid;
 }
@@ -70,6 +108,14 @@ bool Node::isDisplayed() {
 
 bool Node::isOnline() {
     return this->online;
+}
+
+bool Node::isAutoupdate() {
+    return this-autoupdate;
+}
+
+bool Node::isGateway() {
+    return this->gateway;
 }
 
 bool Node::hasValidLocation() {
@@ -254,45 +300,15 @@ QJsonObject Node::getJsonObjectMesh() {
 
 void Node::updateDatabase()
 {
-    if (!this->hasValidLocation()) {
-        QSqlQuery ps = DataGen::getDatabase()->prepareStatement("INSERT INTO nodes SET id = ? ON DUPLICATE KEY UPDATE id = id");
-        ps.addBindValue(this->id);
-        if (!DataGen::getDatabase()->execPS(ps)) {
-            std::cerr << ps.lastError().text().toStdString() << std::endl;
+    if (this->isDisplayed()) {
+        //NodeInfo
+        NodeSQL::addNode(this);
+        //Statistics
+        if (this->isOnline() && (this->id >= 1000 && this->id < 51000)) {
+            StatsSQL::addClientStat(this, this->clients);
+            StatsSQL::addLoadStat(this, static_cast<float>(this->avgLoad));
+            StatsSQL::addMemoryStat(this, this->memoryUsage);
         }
-    } else {
-        QSqlQuery ps = DataGen::getDatabase()->prepareStatement("INSERT INTO nodes SET id = ?, latitude = ?, longitude = ? ON DUPLICATE KEY UPDATE latitude = ?, longitude = ?");
-        ps.addBindValue(this->id);
-        ps.addBindValue(this->location->getLatitude());
-        ps.addBindValue(this->location->getLongitude());
-        ps.addBindValue(this->location->getLatitude());
-        ps.addBindValue(this->location->getLongitude());
-        if (!DataGen::getDatabase()->execPS(ps)) {
-            std::cerr << ps.lastError().text().toStdString() << std::endl;
-        }
-    }
-    QSqlQuery ps = DataGen::getDatabase()->prepareStatement("UPDATE nodes SET community = ?, role = ?, model = ?, firmwareVersion = ?, firmwareBase = ?, firstseen = ?, lastseen = ?, online = ?, autoupdate = ?, gateway = ?, name = ?, email = ? WHERE id = ?");
-    ps.addBindValue(this->community);
-    ps.addBindValue(this->getNodeType());
-    ps.addBindValue(this->model);
-    ps.addBindValue(this->firmwareVersion);
-    ps.addBindValue(this->firmwareBase);
-    ps.addBindValue(static_cast<int>(this->firstseen / 1000));
-    ps.addBindValue(static_cast<int>(this->lastseen / 1000));
-    ps.addBindValue(this->online);
-    ps.addBindValue(this->autoupdate);
-    ps.addBindValue(this->gateway);
-    ps.addBindValue(this->name);
-    ps.addBindValue(this->email);
-    ps.addBindValue(this->id);
-    if (!DataGen::getDatabase()->execPS(ps)) {
-        std::cerr << ps.lastError().text().toStdString() << std::endl;
-    }
-    //Statistics
-    if (this->isOnline() && (this->id >= 1000 && this->id < 51000)) {
-        StatsSQL::addClientStat(this, this->clients);
-        StatsSQL::addLoadStat(this, static_cast<float>(this->avgLoad));
-        StatsSQL::addMemoryStat(this, this->memoryUsage);
     }
 }
 
