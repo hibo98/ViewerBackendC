@@ -12,7 +12,7 @@ class NodeProcessor : public QObject
 {
   Q_OBJECT
 public:
-   NodeProcessor(QList<Node*> nodes);
+   NodeProcessor(const QList<Node*>& nodes);
    virtual ~NodeProcessor();
 
    void process();

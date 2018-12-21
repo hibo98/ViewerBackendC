@@ -10,7 +10,7 @@
 
 class JsonFileGen {
 public:
-    JsonFileGen(QList<Node*> nodes, QList<QMap<int, Link*>*> links);
+    JsonFileGen(const QList<Node*>& nodes, const QList<QMap<int, Link*>*>& links);
     JsonFileGen(const JsonFileGen& orig);
     virtual ~JsonFileGen();
 

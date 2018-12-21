@@ -1,16 +1,16 @@
 #include "DataParserAPI.h"
 
 #include <QJsonValue>
+#include <utility>
 
 DataParserAPI::DataParserAPI(QJsonObject json) {
-    this->json = json;
+    this->json = std::move(json);
 }
 
 DataParserAPI::DataParserAPI(const DataParserAPI& orig) : DataParserAPI(orig.json) {
 }
 
-DataParserAPI::~DataParserAPI() {
-}
+DataParserAPI::~DataParserAPI() = default;
 
 QJsonObject DataParserAPI::getData() {
     if (!this->r.empty()) {

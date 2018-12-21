@@ -42,7 +42,7 @@ private:
     double getUptime();
     bool isOnline();
     
-    static int parseMinutes(QString time);
+    static int parseMinutes(const QString& time);
 };
 
 #endif /* DATAPARSERSYSINFO_H */

@@ -55,7 +55,7 @@ public:
     
     void setOnline(bool online);
     
-    static int convertIpToId(QString ip);
+    static int convertIpToId(const QString& ip);
     
 private:
     int id = -1;

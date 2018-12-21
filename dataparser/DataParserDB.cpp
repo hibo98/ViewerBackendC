@@ -2,7 +2,7 @@
 
 #include <QVariant>
 
-DataParserDB::DataParserDB(QSqlQuery result)
+DataParserDB::DataParserDB(const QSqlQuery& result)
 {
     this->result = result;
 }
@@ -12,8 +12,7 @@ DataParserDB::DataParserDB(const DataParserDB& orig) : DataParserDB(orig.result)
 }
 
 DataParserDB::~DataParserDB()
-{
-}
+= default;
 
 QJsonObject DataParserDB::getData()
 {
@@ -109,10 +108,9 @@ NodeType DataParserDB::getRole()
     QString s = this->result.value("role").toString();
     if (s == "node") {
         return STANDARD;
-    } else {
-        return STANDARD;
-        //@TODO: Include other node types
     }
+    return STANDARD;
+    //@TODO: Include other node types
 }
 
 bool DataParserDB::isGateway()

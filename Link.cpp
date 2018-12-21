@@ -13,8 +13,7 @@ Link::Link(LinkType type, Node* source, Node* target, short sourceTq, short targ
 Link::Link(const Link& orig) : Link(orig.type, orig.source, orig.target, orig.sourceTq, orig.targetTq) {
 }
 
-Link::~Link() {
-}
+Link::~Link() = default;
 
 Node* Link::getSource() {
     return this->source;

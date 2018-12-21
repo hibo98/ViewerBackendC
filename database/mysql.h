@@ -13,9 +13,9 @@ public:
     bool hasConnection();
     void closeConnection();
     
-    bool execute(QString query);
-    QSqlQuery executeQuery(QString query);
-    QSqlQuery prepareStatement(QString query);
+    bool execute(const QString& query);
+    QSqlQuery executeQuery(const QString& query);
+    QSqlQuery prepareStatement(const QString& query);
     bool execPS(QSqlQuery ps);
 private:
     void createCfg();
@@ -26,7 +26,7 @@ private:
     
     QSqlDatabase connection;
     QString host;
-    short port;
+    short port = 3306;
     QString username;
     QString password;
     QString database;

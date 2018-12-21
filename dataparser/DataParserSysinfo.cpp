@@ -5,9 +5,10 @@
 #include <QJsonArray>
 #include <QStringList>
 #include <QUrl>
+#include <utility>
 
 DataParserSysinfo::DataParserSysinfo(QJsonObject json, int version) {
-    this->data = json;
+    this->data = std::move(json);
     this->version = version;
     if (this->data.contains("statistic")) {
         stats = this->data.value("statistic").toObject();
@@ -19,8 +20,7 @@ DataParserSysinfo::DataParserSysinfo(QJsonObject json, int version) {
 DataParserSysinfo::DataParserSysinfo(const DataParserSysinfo& orig) : DataParserSysinfo(orig.data, orig.version) {
 }
 
-DataParserSysinfo::~DataParserSysinfo() {
-}
+DataParserSysinfo::~DataParserSysinfo() = default;
 
 QJsonObject DataParserSysinfo::getData() {
     if (!this->r.empty()) {
@@ -56,8 +56,8 @@ void DataParserSysinfo::getLinkSet(QSet<Link*>* links) {
     if (this->version <= 10) {
         QJsonObject rt = bmxd.contains("routing_tables") ? bmxd.value("routing_tables").toObject() : bmxd.value("RoutingTables").toObject();
         QJsonArray lnks = rt.value("route").toObject().value("link").toArray();
-        for (int i = 0; i < lnks.size(); i++) {
-            QJsonObject l = lnks[i].toObject();
+        for (QJsonValue lnk : lnks) {
+            QJsonObject l = lnk.toObject();
             int targetId = Node::convertIpToId(l.value("target").toString());
             if (targetId != -1) {
                 LinkType linkType = Link::getLinkTypeByInterface(l.value("interface").toString());
@@ -68,14 +68,13 @@ void DataParserSysinfo::getLinkSet(QSet<Link*>* links) {
     }
     if (bmxd.contains("links")) {
         QJsonArray lnks = bmxd.value("links").toArray();
-        for (int i = 0; i < lnks.size(); i++) {
-            QJsonObject l = lnks[i].toObject();
+        for (QJsonValue i : lnks) {
+            QJsonObject l = i.toObject();
             Node* target = DataGen::getDataHolder()->getNode(l.value("node").toInt());
             short tq = l.value("tq").toString().toShort();
             if (this->version == 10) {
                 QList<Link*> linkmap = links->values();
-                for (int i = 0; i < linkmap.size(); i++) {
-                    Link* lnk = linkmap[i];
+                for (Link* lnk : linkmap) {
                     if (lnk->getTarget() == target) {
                         lnk->setSourceTq(tq);
                         break;
@@ -214,7 +213,7 @@ bool DataParserSysinfo::isOnline() {
     return true;
 }
 
-int DataParserSysinfo::parseMinutes(QString time) {
+int DataParserSysinfo::parseMinutes(const QString& time) {
     if (time.contains(":")) {
         return time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt();
     } else {

@@ -1,7 +1,7 @@
 #include "DataGen.h"
 #include "Node.h"
 #include "JsonFileGen.h"
-#include "StatsSQL.h"
+#include "database/statssql.h"
 #include "dataparser/DataParserDB.h"
 #include "processor/nodeprocessor.h"
 #include "database/nodesql.h"
@@ -57,8 +57,7 @@ void DataGen::fillOfflineNodes()
     std::cout << "Fill offline nodes from database..." << std::endl;
     QString ids;
     QList<Node*> nodes = DataGen::dh->getNodes().values();
-    for (int i = 0; i < nodes.size(); i++) {
-        Node* node = nodes.at(i);
+    for (Node* node : nodes) {
         if (!node->isOnline()) {
             QString s = QString(std::to_string(node->getId()).c_str());
             ids = ids.append(s).append(",");
@@ -79,11 +78,9 @@ void DataGen::fillOfflineNodes()
 void DataGen::collectLinks() {
     std::cout << "Collecting links..." << std::endl;
     QList<Node*> values = DataGen::dh->getNodes().values();
-    for (int i = 0; i < values.size(); i++) {
-        Node* node = values.at(i);
+    for (Node* node : values) {
         QList<Link*> links = node->getLinks().values();
-        for (int j = 0; j < links.size(); j++) {
-            Link* link = links.at(j);
+        for (Link* link : links) {
             Link* lnk = DataGen::dh->getLink(link->getSource()->getId(), link->getTarget()->getId());
             if (lnk == nullptr) {
                 DataGen::dh->addLink(link);
@@ -105,8 +102,7 @@ void DataGen::saveToDatabase()
 {
     std::cout << "Saving to database..." << std::endl;
     QList<Node*> values = DataGen::dh->getNodes().values();
-    for (int i = 0; i < values.size(); i++) {
-        Node* node = values.at(i);
+    for (Node* node : values) {
         node->updateDatabase();
     }
     NodeSQL::processNodes();

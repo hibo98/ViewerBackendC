@@ -13,8 +13,7 @@ void NodeSQL::processNodes()
     QSqlQuery ps1 = DataGen::getDatabase()->prepareStatement("INSERT INTO nodes SET id = ? ON DUPLICATE KEY UPDATE id = id");
     QSqlQuery ps2 = DataGen::getDatabase()->prepareStatement("INSERT INTO nodes (id, latitude, longitude) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE latitude = VALUES(latitude), longitude = VALUES(longitude)");
     QSqlQuery ps3 = DataGen::getDatabase()->prepareStatement("UPDATE nodes SET community = ?, role = ?, model = ?, firmwareVersion = ?, firmwareBase = ?, firstseen = ?, lastseen = ?, online = ?, autoupdate = ?, gateway = ?, name = ?, email = ? WHERE id = ?");
-    for (int i = 0; i < NodeSQL::nodes.size(); i++) {
-        Node* node = NodeSQL::nodes.at(i);
+    for (Node* node : NodeSQL::nodes) {
         if (!node->hasValidLocation()) {
             ps1.addBindValue(node->getId());
             DataGen::getDatabase()->execPS(ps1);

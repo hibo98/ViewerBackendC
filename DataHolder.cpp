@@ -12,12 +12,10 @@ DataHolder::DataHolder() : QObject(nullptr){
 
 DataHolder::~DataHolder() {
     QList<QMap<int,Link*>*> links1 = this->links.values();
-    for (int i = 0; i < links1.size(); i++) {
-        QMap<int,Link*>* links2 = links1.at(i);
+    for (QMap<int,Link*>* links2 : links1) {
         QList<Link*> values = links2->values();
         int min = -1;
-        for (int j = 0; j < values.size(); j++) {
-            Link* link = values.at(j);
+        for (Link* link : values) {
             min = std::min(link->getSource()->getId(), link->getTarget()->getId());
             int max = std::max(link->getSource()->getId(), link->getTarget()->getId());
             links2->remove(max);
@@ -28,9 +26,7 @@ DataHolder::~DataHolder() {
         }
         delete links2;
     }
-    QList<Node*> n = this->nodes.values();
-    for (int i = 0; i < n.size(); i++) {
-        Node* node = n.at(i);
+    for (Node* node : this->nodes) {
         this->nodes.remove(node->getId());
         delete node;
     }
@@ -78,7 +74,7 @@ void DataHolder::requestAPI() {
     this->apiRequest->run();
 }
 
-void DataHolder::processAPI(QJsonDocument doc) {
+void DataHolder::processAPI(const QJsonDocument& doc) {
     delete this->apiRequest;
     if (!doc.isArray()) {
         std::cerr << "No Array!" << std::endl;
@@ -86,8 +82,7 @@ void DataHolder::processAPI(QJsonDocument doc) {
         return;
     }
     QJsonArray array = doc.array();
-    for (int i = 0; i < array.size(); i++) {
-        QJsonValue value = array.at(i);
+    for (QJsonValue value : array) {
         if (value.isObject()) {
             QJsonObject o = value.toObject();
             int id = o.value("id").toString("-1").toInt();
@@ -101,7 +96,7 @@ void DataHolder::processAPI(QJsonDocument doc) {
     emit processedAPI(false);
 }
 
-void DataHolder::processAPIError(QString eStr) {
+void DataHolder::processAPIError(const QString& eStr) {
     delete this->apiRequest;
     std::cerr << eStr.toStdString() << std::endl;
     emit processedAPI(true);

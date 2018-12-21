@@ -1,7 +1,7 @@
 #include "Node.h"
 #include "Util.h"
 #include "DataGen.h"
-#include "StatsSQL.h"
+#include "database/statssql.h"
 #include "database/nodesql.h"
 
 #include <iostream>
@@ -111,7 +111,7 @@ bool Node::isOnline() {
 }
 
 bool Node::isAutoupdate() {
-    return this-autoupdate;
+    return this->autoupdate;
 }
 
 bool Node::isGateway() {
@@ -153,9 +153,7 @@ void Node::fill(DataParser* dp) {
         this->lastseen = json.value("lastseen").toString().toLong();
     }
     if (json.contains("lat") && json.contains("lon")) {
-        if (this->location != nullptr) {
-            delete this->location;
-        }
+        delete this->location;
         this->location = new Location(json.value("lat").toDouble(), json.value("lon").toDouble());
     }
     if (json.contains("load")) {
@@ -306,7 +304,7 @@ void Node::updateDatabase()
         //Statistics
         if (this->isOnline() && (this->id >= 1000 && this->id < 51000)) {
             StatsSQL::addClientStat(this, this->clients);
-            StatsSQL::addLoadStat(this, static_cast<float>(this->avgLoad));
+            StatsSQL::addLoadStat(this, this->avgLoad);
             StatsSQL::addMemoryStat(this, this->memoryUsage);
         }
     }
@@ -316,7 +314,7 @@ void Node::setOnline(bool online) {
     this->online = online;
 }
 
-int Node::convertIpToId(QString ip) {
+int Node::convertIpToId(const QString& ip) {
     QStringList split = ip.split('.');
     if (split.size() == 4) {
         return split.at(2).toInt() * 255 + split.at(3).toInt() - 1;

@@ -12,7 +12,7 @@
 class DataParserDB : public DataParser
 {
 public:
-    DataParserDB(QSqlQuery result);
+    DataParserDB(const QSqlQuery& result);
     DataParserDB(const DataParserDB& orig);
     virtual ~DataParserDB() override;
 

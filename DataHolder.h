@@ -25,8 +25,8 @@ public:
     void requestAPI();
 
 public slots:
-    void processAPI(QJsonDocument doc);
-    void processAPIError(QString eStr);
+    void processAPI(const QJsonDocument& doc);
+    void processAPIError(const QString& eStr);
 
 signals:
     void processedAPI(bool error);

@@ -2,7 +2,7 @@
 #define DATAGEN_H
 
 #include "DataHolder.h"
-#include "MySQL.h"
+#include "database/mysql.h"
 
 #include <QObject>
 

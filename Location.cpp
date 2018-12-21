@@ -10,8 +10,7 @@ Location::Location(double latitude, double longitude) {
 Location::Location(const Location& orig) : Location(orig.latitude, orig.longitude) {
 }
 
-Location::~Location() {
-}
+Location::~Location() = default;
 
 double Location::getLatitude() {
     return this->latitude;

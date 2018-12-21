@@ -11,16 +11,14 @@ NodeSysinfoProcessor::NodeSysinfoProcessor(Node* element) : QObject(nullptr)
     connect(this->request, &JsonRequest::error, this, &NodeSysinfoProcessor::error);
 }
 
-NodeSysinfoProcessor::~NodeSysinfoProcessor()
-{
-}
+NodeSysinfoProcessor::~NodeSysinfoProcessor() = default;
 
 void NodeSysinfoProcessor::run()
 {
     this->runRequest();
 }
 
-void NodeSysinfoProcessor::success(QJsonDocument doc)
+void NodeSysinfoProcessor::success(const QJsonDocument& doc)
 {
     if (doc.isObject()) {
         QJsonObject json = doc.object();
@@ -35,7 +33,7 @@ void NodeSysinfoProcessor::success(QJsonDocument doc)
     this->done();
 }
 
-void NodeSysinfoProcessor::error(QString eStr)
+void NodeSysinfoProcessor::error(const QString& eStr)
 {
     if (this->retryCount == 0 && (eStr != "Host unreachable" && eStr != "Unknown error")) {
         std::cerr << "Node " << this->element->getId() << ": " << eStr.toStdString() << std::endl;

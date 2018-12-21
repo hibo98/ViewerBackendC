@@ -10,7 +10,7 @@
 #include <QJsonValue>
 #include <QString>
 
-JsonFileGen::JsonFileGen(QList<Node*> nodes, QList<QMap<int, Link*>*> links) {
+JsonFileGen::JsonFileGen(const QList<Node*>& nodes, const QList<QMap<int, Link*>*>& links) {
     for (int i = 0; i < nodes.size(); i++) {
         Node* node = nodes.at(i);
         if (!node->isDisplayed()) {
@@ -25,10 +25,9 @@ JsonFileGen::JsonFileGen(QList<Node*> nodes, QList<QMap<int, Link*>*> links) {
         this->graphNodes.append(QJsonValue(jsonNode));
         this->nodeIds.insert(node, i);
     }
-    for (int i = 0; i < links.size(); i++) {
-        QList<Link*> linkl = links.at(i)->values();
-        for (int j = 0; j < linkl.size(); j++) {
-            Link* link = linkl.at(j);
+    for (QMap<int, Link*>* i : links) {
+        QList<Link*> linkl = i->values();
+        for (Link* link : linkl) {
             if (!link->getSource()->isDisplayed() ||
                     !link->getTarget()->isDisplayed() ||
                     !link->getSource()->isOnline() ||
@@ -75,8 +74,7 @@ JsonFileGen::JsonFileGen(const JsonFileGen& orig) {
     this->nodeIds = orig.nodeIds;
 }
 
-JsonFileGen::~JsonFileGen() {
-}
+JsonFileGen::~JsonFileGen() = default;
 
 void JsonFileGen::genHopGlass() {
     //nodes.json

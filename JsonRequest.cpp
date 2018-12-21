@@ -2,9 +2,10 @@
 
 #include <QString>
 #include <QTimer>
+#include <utility>
 
 JsonRequest::JsonRequest(QUrl url) : QObject(nullptr) {
-    this->url = url;
+    this->url = std::move(url);
 }
 
 JsonRequest::~JsonRequest() {

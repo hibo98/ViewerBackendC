@@ -1,19 +1,17 @@
-#include "StatsSQL.h"
-#include "DataGen.h"
-
-#include <QMap>
+#include "statssql.h"
+#include "../DataGen.h"
 
 QMap<GeneralStatType, double> StatsSQL::generalStats = QMap<GeneralStatType, double>();
-QMap<Node*, short> StatsSQL::clients = QMap<Node*, short>();
-QMap<Node*, float> StatsSQL::load = QMap<Node*, float>();
-QMap<Node*, double> StatsSQL::memory = QMap<Node*, double>();
+QHash<Node*, short> StatsSQL::clients = QHash<Node*, short>();
+QHash<Node*, double> StatsSQL::load = QHash<Node*, double>();
+QHash<Node*, double> StatsSQL::memory = QHash<Node*, double>();
 
 void StatsSQL::addClientStat(Node* n, short clients)
 {
     StatsSQL::clients.insert(n, clients);
 }
 
-void StatsSQL::addLoadStat(Node* n, float load)
+void StatsSQL::addLoadStat(Node* n, double load)
 {
     StatsSQL::load.insert(n, load);
 }
@@ -52,7 +50,7 @@ void StatsSQL::processStats()
         QSqlQuery ps = DataGen::getDatabase()->prepareStatement(query);
         for (Node* p : StatsSQL::load.keys()) {
             ps.addBindValue(p->getId());
-            ps.addBindValue(static_cast<double>(StatsSQL::load.value(p)));
+            ps.addBindValue(StatsSQL::load.value(p));
         }
         DataGen::getDatabase()->execPS(ps);
     }

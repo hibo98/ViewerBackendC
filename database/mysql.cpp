@@ -1,4 +1,4 @@
-#include "MySQL.h"
+#include "mysql.h"
 
 #include <iostream>
 #include <QFile>
@@ -40,7 +40,7 @@ bool MySQL::loadCfg() {
         return false;
     }
     this->host = cfg.value("host").toString();
-    this->port = cfg.contains("port") ? static_cast<short>(cfg.value("port").toInt()) : 3306;
+    this->port = cfg.contains("port") ? cfg.value("port").toString().toShort() : 3306;
     this->username = cfg.value("username").toString();
     this->password = cfg.value("password").toString();
     this->database = cfg.value("database").toString();
@@ -88,21 +88,21 @@ void MySQL::closeConnection() {
     this->connection.close();
 }
 
-bool MySQL::execute(QString query) {
+bool MySQL::execute(const QString& query) {
     if (!this->hasConnection()) {
         this->reconnect();
     }
     return this->connection.exec().exec(query);
 }
 
-QSqlQuery MySQL::executeQuery(QString query) {
+QSqlQuery MySQL::executeQuery(const QString& query) {
     if (!this->hasConnection()) {
         this->reconnect();
     }
     return this->connection.exec(query);
 }
 
-QSqlQuery MySQL::prepareStatement(QString query) {
+QSqlQuery MySQL::prepareStatement(const QString& query) {
     QSqlQuery q = this->connection.exec();
     q.prepare(query);
     return q;

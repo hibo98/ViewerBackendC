@@ -23,17 +23,17 @@ SOURCES += \
     Link.cpp \
     Location.cpp \
     main.cpp \
-    MySQL.cpp \
     Node.cpp \
     Util.cpp \
     dataparser/DataParserAPI.cpp \
     dataparser/DataParserSysinfo.cpp \
     dataparser/DataParser.cpp \
     dataparser/DataParserDB.cpp \
-    StatsSQL.cpp \
     processor/nodesysinfoprocessor.cpp \
     processor/nodeprocessor.cpp \
-    database/nodesql.cpp
+    database/nodesql.cpp \
+    database/statssql.cpp \
+    database/mysql.cpp
 
 HEADERS += \
     DataGen.h \
@@ -42,14 +42,14 @@ HEADERS += \
     JsonRequest.h \
     Link.h \
     Location.h \
-    MySQL.h \
     Node.h \
     Util.h \
     dataparser/DataParser.h \
     dataparser/DataParserAPI.h \
     dataparser/DataParserSysinfo.h \
     dataparser/DataParserDB.h \
-    StatsSQL.h \
     processor/nodesysinfoprocessor.h \
     processor/nodeprocessor.h \
-    database/nodesql.h
+    database/nodesql.h \
+    database/statssql.h \
+    database/mysql.h

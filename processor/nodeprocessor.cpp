@@ -2,14 +2,12 @@
 
 #include <QEventLoop>
 
-NodeProcessor::NodeProcessor(QList<Node*> elements) : QObject(nullptr)
+NodeProcessor::NodeProcessor(const QList<Node*>& elements) : QObject(nullptr)
 {
     this->queue.append(elements);
 }
 
-NodeProcessor::~NodeProcessor()
-{
-}
+NodeProcessor::~NodeProcessor() = default;
 
 void NodeProcessor::process()
 {

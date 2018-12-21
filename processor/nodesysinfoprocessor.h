@@ -21,8 +21,8 @@ public:
     void run();
 
 public slots:
-    void success(QJsonDocument doc);
-    void error(QString eStr);
+    void success(const QJsonDocument& doc);
+    void error(const QString& eStr);
 
 signals:
     void finished(NodeSysinfoProcessor* processor);
