@@ -3,6 +3,7 @@
 #include "Util.h"
 
 #include <iostream>
+#include <QDir>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -63,6 +64,9 @@ JsonFileGen::JsonFileGen(const QList<Node*>& nodes, const QList<QMap<int, Link*>
             }
         }
     }
+    if (!QDir("data").exists()) {
+        QDir().mkdir("data");
+    }
 }
 
 JsonFileGen::JsonFileGen(const JsonFileGen& orig) {
@@ -83,7 +87,7 @@ void JsonFileGen::genHopGlass() {
     jsonObject.insert("timestamp", QJsonValue(Util::getTimeString(Util::getCurrentTimestamp())));
     jsonObject.insert("version", QJsonValue(2));
     QJsonDocument nodesDoc(jsonObject);
-    QFile nodes("nodes.json");
+    QFile nodes("data/nodes.json");
     if (!nodes.open(QIODevice::WriteOnly)) {
         std::cerr << "Couldn't open file:" << "nodes.json" << std::endl;
         return;
@@ -100,7 +104,7 @@ void JsonFileGen::genHopGlass() {
     batadv.insert("links", QJsonValue(this->graphLinks));
     jsonObject.insert("batadv", QJsonValue(batadv));
     QJsonDocument graphDoc(jsonObject);
-    QFile graph("graph.json");
+    QFile graph("data/graph.json");
     if (!graph.open(QIODevice::WriteOnly)) {
         std::cerr << "Couldn't open file:" << "graph.json" << std::endl;
         return;
@@ -114,7 +118,7 @@ void JsonFileGen::genMeshViewer() {
     jsonObject.insert("nodes", QJsonValue(this->meshViewerNodes));
     jsonObject.insert("links", QJsonValue(this->meshViewerLinks));
     QJsonDocument doc(jsonObject);
-    QFile file("meshviewer.json");
+    QFile file("data/meshviewer.json");
     if (!file.open(QIODevice::WriteOnly)) {
         std::cerr << "Couldn't open file:" << "meshviewer.json" << std::endl;
         return;
