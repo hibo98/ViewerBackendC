@@ -3,6 +3,7 @@
 #include <QString>
 #include <QTimer>
 #include <utility>
+#include <iostream>
 
 QNetworkAccessManager* JsonRequest::manager = new QNetworkAccessManager();
 
@@ -21,6 +22,7 @@ void JsonRequest::run() {
 }
 
 void JsonRequest::finished() {
+    std::cout << std::string("finished" + url.toString().toStdString()) << std::endl;
     if (!this->reply->error()) {
         QString answer = this->reply->readAll();
         QJsonDocument doc = QJsonDocument::fromJson(answer.toUtf8());
@@ -30,12 +32,14 @@ void JsonRequest::finished() {
             emit error("Empty document");
         }
     } else {
-        emit error(this->reply->errorString());
+        emit error(this->reply->errorString() + "F");
     }
+    this->reply->close();
 }
 
 void JsonRequest::replyError(QNetworkReply::NetworkError) {
-    emit error(this->reply->errorString());
+    std::cout << std::string("error" + url.toString().toStdString()) << std::endl;
+    emit error(this->reply->errorString() + "E");
 }
 
 void JsonRequest::timeout() {

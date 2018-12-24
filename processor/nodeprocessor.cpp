@@ -14,7 +14,7 @@ void NodeProcessor::process()
     QEventLoop loop;
     connect(this, &NodeProcessor::queueEmpty, &loop, &QEventLoop::quit);
     int max = this->queue.size();
-    for (int i = 0; i < 10 && i < max; i++) {
+    for (int i = 0; i < 6 && i < max; i++) {
         this->processNode(this->queue.dequeue());
     }
     loop.exec();
