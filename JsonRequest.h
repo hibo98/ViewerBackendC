@@ -19,7 +19,7 @@ public:
 
 private:
     QUrl url;
-    QNetworkAccessManager* manager;
+    static QNetworkAccessManager* manager;
     QNetworkRequest request;
     QNetworkReply* reply;
 

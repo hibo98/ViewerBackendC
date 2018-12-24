@@ -4,18 +4,17 @@
 #include <QTimer>
 #include <utility>
 
+QNetworkAccessManager* JsonRequest::manager = new QNetworkAccessManager();
+
 JsonRequest::JsonRequest(QUrl url) : QObject(nullptr) {
     this->url = std::move(url);
 }
 
-JsonRequest::~JsonRequest() {
-    delete this->manager;
-}
+JsonRequest::~JsonRequest() = default;
 
 void JsonRequest::run() {
-    this->manager = new QNetworkAccessManager();
     this->request.setUrl(this->url);
-    this->reply = this->manager->get(this->request);
+    this->reply = JsonRequest::manager->get(this->request);
     QObject::connect(this->reply, &QNetworkReply::finished, this, &JsonRequest::finished);
     QObject::connect(this->reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(replyError(QNetworkReply::NetworkError)));
     QTimer::singleShot(7500, this, &JsonRequest::timeout);
