@@ -98,9 +98,8 @@ int DataParserSysinfo::getNodeId() {
 bool DataParserSysinfo::getAutoUpdate() {
     if (version >= 14) {
         return this->data.value("system").toObject().value("autoupdate").toInt(0) == 1;
-    } else {
-        return false;
-    }
+    } 
+    return false;
 }
 
 int DataParserSysinfo::getClients() {
@@ -159,9 +158,8 @@ double DataParserSysinfo::getMemoryUsage() {
         double memTotal = this->stats.value("meminfo_MemTotal").toString().split(" ")[0].toDouble();
         double memFree = this->stats.value("meminfo_MemFree").toString().split(" ")[0].toDouble();
         return (memTotal - memFree) / memTotal;
-    } else {
-        return -1;
     }
+    return -1;
 }
 
 QString DataParserSysinfo::getModel() {
@@ -177,10 +175,10 @@ NodeType DataParserSysinfo::getRole() {
         QString s = this->data.value("system").toObject().value("node_type").toString();
         if (s == "node") {
             return STANDARD;
-        } else {
-            return STANDARD;
-            //@TODO: Include other node types
         }
+        //@TODO: Include other node types
+        return STANDARD;
+
     }
     return STANDARD;
 }
@@ -191,22 +189,20 @@ double DataParserSysinfo::getUptime() {
     if (version < 10 && jsonUptime.contains(":")) {
         if (uptime[3].replace(",", "").contains(":")) {
             return parseMinutes(uptime[3].replace(",", "")) * 60;
-        } else {
-            short days = uptime[3].replace(",", "").toShort();
-            int min;
-            QString minutes = uptime[5].replace(",", "");
-            QString time = uptime[6].replace(",", "");
-            if (minutes.isEmpty()) {
-                min = parseMinutes(time);
-            } else {
-                min = parseMinutes(minutes);
-            }
-            return min * 60 + days * 86400;
         }
+        short days = uptime[3].replace(",", "").toShort();
+        int min;
+        QString minutes = uptime[5].replace(",", "");
+        QString time = uptime[6].replace(",", "");
+        if (minutes.isEmpty()) {
+            min = parseMinutes(time);
+        } else {
+            min = parseMinutes(minutes);
+        }
+        return min * 60 + days * 86400;
         //Ab v10
-    } else {
-        return uptime[0].toDouble();
     }
+    return uptime[0].toDouble();
 }
 
 bool DataParserSysinfo::isOnline() {
@@ -216,7 +212,6 @@ bool DataParserSysinfo::isOnline() {
 int DataParserSysinfo::parseMinutes(const QString& time) {
     if (time.contains(":")) {
         return time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt();
-    } else {
-        return time.toInt();
     }
+    return time.toInt();
 }

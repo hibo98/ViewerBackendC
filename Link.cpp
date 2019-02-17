@@ -75,9 +75,8 @@ LinkType Link::getLinkTypeByInterface(QString s) {
         return OTHER;
     } else if (s == "tbb-fastd" || s == "tbb_fastd" || s == "tbb_fastd2") {
         return TUNNEL;
-    } else {
-        return OTHER;
     }
+    return OTHER;
 }
 
 LinkType Link::getLinkTypeByType(QString s) {
@@ -88,9 +87,8 @@ LinkType Link::getLinkTypeByType(QString s) {
         return WIRELESS;
     } else if (s == "backbone") {
         return TUNNEL;
-    } else {
-        return OTHER;
     }
+    return OTHER;
 }
 
 double Link::convertToHopGlass(short tq) {

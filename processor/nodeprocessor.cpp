@@ -32,7 +32,7 @@ void NodeProcessor::requestFinished(NodeSysinfoProcessor* proc)
 
 void NodeProcessor::processNode(Node* node)
 {
-    NodeSysinfoProcessor* request = new NodeSysinfoProcessor(node);
+    auto request = new NodeSysinfoProcessor(node);
     this->processing.append(request);
     connect(request, &NodeSysinfoProcessor::finished, this, &NodeProcessor::requestFinished);
     connect(request, &NodeSysinfoProcessor::finish, request, &NodeSysinfoProcessor::deleteLater);

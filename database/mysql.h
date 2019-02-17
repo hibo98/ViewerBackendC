@@ -4,6 +4,7 @@
 #include <QString>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QVariant>
 
 class MySQL {
 public:

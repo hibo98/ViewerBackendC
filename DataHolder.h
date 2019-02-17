@@ -1,7 +1,6 @@
 #ifndef DATAHOLDER_H
 #define DATAHOLDER_H
 
-#include "JsonRequest.h"
 #include "Node.h"
 
 #include <QJsonDocument>
@@ -34,7 +33,6 @@ signals:
 private:
     QMap<int, Node*> nodes;
     QMap<int, QMap<int, Link*>*> links;
-    JsonRequest* apiRequest;
 };
 
 #endif /* DATAHOLDER_H */

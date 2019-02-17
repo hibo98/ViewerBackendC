@@ -24,9 +24,8 @@ Node::~Node() {
 QString Node::getHostname() {
     if (this->name.isNull() || this->name.isEmpty()) {
         return QString::number(this->id);
-    } else {
-        return QString::number(this->id).append('-').append(this->name);
     }
+    return QString::number(this->id).append('-').append(this->name);
 }
 
 QString Node::getFakeMac() {

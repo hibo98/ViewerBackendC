@@ -1,4 +1,5 @@
 #include "DataHolder.h"
+#include "JsonRequest.h"
 #include "dataparser/DataParserAPI.h"
 
 #include <algorithm>
@@ -45,9 +46,8 @@ Link* DataHolder::getLink(int node1, int node2) {
     int max = std::max(node1, node2);
     if (!this->links.contains(min)) {
         return nullptr;
-    } else {
-        return this->links.value(min)->value(max, nullptr);
     }
+    return this->links.value(min)->value(max, nullptr);
 }
 
 void DataHolder::addLink(Link* l) {
@@ -68,14 +68,14 @@ QMap<int, QMap<int, Link*>*> DataHolder::getLinks() {
 }
 
 void DataHolder::requestAPI() {
-    this->apiRequest = new JsonRequest(QUrl("http://api.freifunk-dresden.de/freifunk-niklas-hopglass.json"));
-    connect(this->apiRequest, &JsonRequest::result, this, &DataHolder::processAPI);
-    connect(this->apiRequest, &JsonRequest::error, this, &DataHolder::processAPIError);
-    this->apiRequest->run();
+    auto apiRequest = new JsonRequest(QUrl("http://api.freifunk-dresden.de/freifunk-niklas-hopglass.json"));
+    connect(apiRequest, &JsonRequest::result, this, &DataHolder::processAPI);
+    connect(apiRequest, &JsonRequest::error, this, &DataHolder::processAPIError);
+    connect(apiRequest, &JsonRequest::queueDelete, apiRequest, &JsonRequest::deleteLater);
+    apiRequest->run();
 }
 
 void DataHolder::processAPI(const QJsonDocument& doc) {
-    delete this->apiRequest;
     if (!doc.isArray()) {
         std::cerr << "No Array!" << std::endl;
         emit processedAPI(true);
@@ -97,7 +97,6 @@ void DataHolder::processAPI(const QJsonDocument& doc) {
 }
 
 void DataHolder::processAPIError(const QString& eStr) {
-    delete this->apiRequest;
     std::cerr << eStr.toStdString() << std::endl;
     emit processedAPI(true);
 }

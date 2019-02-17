@@ -1,10 +1,10 @@
 #include "DataGen.h"
 #include "Node.h"
 #include "JsonFileGen.h"
+#include "database/nodesql.h"
 #include "database/statssql.h"
 #include "dataparser/DataParserDB.h"
 #include "processor/nodeprocessor.h"
-#include "database/nodesql.h"
 
 #include <iostream>
 #include <QCoreApplication>
@@ -69,7 +69,7 @@ void DataGen::fillOfflineNodes()
     }
     QSqlQuery rs = DataGen::db->executeQuery("SELECT * FROM nodes WHERE id IN (" + ids + ")");
     while (rs.next()) {
-        DataParserDB* dp = new DataParserDB(rs);
+        auto dp = new DataParserDB(rs);
         DataGen::dh->getNode(rs.value("id").toInt())->fill(dp);
         delete dp;
     }
