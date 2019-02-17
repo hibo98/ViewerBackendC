@@ -5,7 +5,6 @@
 #include <QObject>
 #include <QUrl>
 #include <QNetworkAccessManager>
-#include <QNetworkRequest>
 #include <QNetworkReply>
 
 class JsonRequest : public QObject {
@@ -20,17 +19,17 @@ public:
 private:
     QUrl url;
     static QNetworkAccessManager* manager;
-    QNetworkRequest request;
     QNetworkReply* reply;
+    bool hasError = false;
 
 private slots:
     void finished();
     void replyError(QNetworkReply::NetworkError e);
-    void timeout();
 
 signals:
     void result(QJsonDocument doc);
     void error(QString eStr);
+    void queueDelete();
 };
 
 #endif /* JSONREQUEST_H */

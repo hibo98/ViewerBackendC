@@ -1,3 +1,4 @@
+#include "../JsonRequest.h"
 #include "nodesysinfoprocessor.h"
 #include "dataparser/DataParserSysinfo.h"
 
@@ -6,9 +7,6 @@
 NodeSysinfoProcessor::NodeSysinfoProcessor(Node* element) : QObject(nullptr)
 {
     this->element = element;
-    this->request = new JsonRequest(QUrl("http://" + this->element->getIpAddress() + "/sysinfo-json.cgi"));
-    connect(this->request, &JsonRequest::result, this, &NodeSysinfoProcessor::success);
-    connect(this->request, &JsonRequest::error, this, &NodeSysinfoProcessor::error);
 }
 
 NodeSysinfoProcessor::~NodeSysinfoProcessor() = default;
@@ -45,7 +43,11 @@ void NodeSysinfoProcessor::error(const QString& eStr)
 void NodeSysinfoProcessor::runRequest() {
     if (this->retryCount > 0) {
         this->retryCount--;
-        this->request->run();
+        JsonRequest* request = new JsonRequest(QUrl("http://" + this->element->getIpAddress() + "/sysinfo-json.cgi"));
+        connect(request, &JsonRequest::result, this, &NodeSysinfoProcessor::success);
+        connect(request, &JsonRequest::error, this, &NodeSysinfoProcessor::error);
+        connect(request, &JsonRequest::queueDelete, request, &JsonRequest::deleteLater);
+        request->run();
     } else {
         this->done();
     }
@@ -53,7 +55,6 @@ void NodeSysinfoProcessor::runRequest() {
 
 void NodeSysinfoProcessor::done()
 {
-    delete this->request;
     emit finished(this);
     emit finish();
 }

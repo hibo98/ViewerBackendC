@@ -1,7 +1,6 @@
 #ifndef NODESYSINFOPROCESSOR_H
 #define NODESYSINFOPROCESSOR_H
 
-#include "../JsonRequest.h"
 #include "../Node.h"
 
 #include <QJsonDocument>
@@ -30,7 +29,6 @@ signals:
 
 private:
     Node* element;
-    JsonRequest* request;
     int retryCount = 3;
 
     void runRequest();
